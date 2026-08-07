@@ -1,0 +1,279 @@
+// =============================================================
+// Al-Arz Real Estate — Prisma Schema
+// =============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+// =============================================================
+// ENUMS
+// =============================================================
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum PropertyListingType {
+  SALE
+  RENT
+}
+
+enum PropertyCategory {
+  HOUSE
+  APARTMENT
+  PLOT
+  COMMERCIAL
+  FARMHOUSE
+  VILLA
+  BUILDING
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  SOLD
+  RENTED
+  RESERVED
+}
+
+enum ClientStatus {
+  NEW
+  CONTACTED
+  NEGOTIATING
+  CLOSED
+  LOST
+}
+
+enum InventoryStatus {
+  AVAILABLE
+  SOLD
+  RESERVED
+  RENTED
+}
+
+enum LeadSource {
+  WEBSITE
+  REFERRAL
+  WALK_IN
+  PHONE
+  SOCIAL_MEDIA
+  OTHER
+}
+
+// =============================================================
+// AUTH.JS ADAPTER MODELS
+// =============================================================
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// =============================================================
+// CORE APPLICATION MODELS
+// =============================================================
+
+/// Platform user — can be ADMIN or STAFF
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String    // bcrypt hashed
+  phone         String?
+  role          Role      @default(STAFF)
+  isActive      Boolean   @default(true)
+
+  // Auth.js relations
+  accounts Account[]
+  sessions Session[]
+
+  // Business relations
+  createdProperties  Property[] @relation("PropertyCreatedBy")
+  assignedProperties Property[] @relation("PropertyAssignedTo")
+  assignedClients    Client[]   @relation("ClientAssignedStaff")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+enum PropertyLabel {
+  SUPER_HOT
+  HOT
+  NONE
+}
+
+/// Real estate listing — either for sale or rent
+model Property {
+  id          String              @id @default(cuid())
+  title       String
+  description String?             @db.Text
+  price       Float
+  type        PropertyListingType // SALE or RENT
+  category    PropertyCategory    // HOUSE, APARTMENT, PLOT, etc.
+  address     String
+  city        String
+  bedrooms    Int?
+  bathrooms   Int?
+  area        Float?              // in sq ft or marla
+  status      PropertyStatus      @default(AVAILABLE)
+  images      String[]            // array of image URLs/paths
+  featured    Boolean             @default(false)
+  isActive    Boolean             @default(true) // Controls public visibility
+  label       PropertyLabel       @default(NONE)
+
+  // Staff who created/owns this listing (mandatory)
+  createdById String
+  createdBy   User   @relation("PropertyCreatedBy", fields: [createdById], references: [id])
+
+  // Staff currently managing/assigned to this listing (optional)
+  assignedToId String?
+  assignedTo   User?   @relation("PropertyAssignedTo", fields: [assignedToId], references: [id])
+
+  // Child relations
+  clients   Client[]
+  inventory InventoryItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([city])
+  @@index([status])
+  @@index([type])
+  @@index([category])
+  @@index([featured])
+  @@index([isActive])
+  @@index([createdById])
+}
+
+/// Client / Lead — someone who has inquired about a property
+model Client {
+  id      String @id @default(cuid())
+  name    String
+  phone   String
+  email   String?
+  message String? @db.Text
+  source  LeadSource @default(WEBSITE)
+  notes   String?    @db.Text
+  status  ClientStatus @default(NEW)
+
+  // The property they inquired about
+  propertyId String?
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+
+  // Staff member managing this lead
+  assignedStaffId String?
+  assignedStaff   User?   @relation("ClientAssignedStaff", fields: [assignedStaffId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([assignedStaffId])
+  @@index([propertyId])
+}
+
+/// Inventory unit — represents individual units within a multi-unit project
+/// e.g. 20 apartments in a building, each tracked separately
+model InventoryItem {
+  id         String          @id @default(cuid())
+  unitNumber String          // e.g. "A-101", "Block-2-Unit-5"
+  floor      Int?            // floor number if applicable
+  area       Float?          // unit-specific area override (sq ft / marla)
+  price      Float?          // unit-specific price override
+  status     InventoryStatus @default(AVAILABLE)
+  quantity   Int             @default(1) // for identical bulk units
+  notes      String?         @db.Text
+
+  // Parent property (the project/building this unit belongs to)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([propertyId, unitNumber])
+  @@index([propertyId])
+  @@index([status])
+}
+
+/// Client testimonial / review displayed on the public website
+model Testimonial {
+  id         String   @id @default(cuid())
+  name       String
+  role       String   // e.g. "First-time Buyer", "Property Investor"
+  quote      String   @db.Text
+  image      String?  // URL to client photo
+  rating     Int      @default(5) // 1–5
+  isActive   Boolean  @default(true)
+  sortOrder  Int      @default(0)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+/// Global settings for the website
+model SiteSettings {
+  id                   String   @id @default("default")
+  phone                String?
+  phone2               String?
+  email                String?
+  email2               String?
+  address              String?
+  city                 String?
+  businessHours        String?
+  businessHoursWeekend String?
+  facebook             String?
+  twitter              String?
+  instagram            String?
+  linkedin             String?
+
+  updatedAt DateTime @updatedAt
+}

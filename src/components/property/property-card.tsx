@@ -1,0 +1,128 @@
+import Link from "next/link";
+import Image from "next/image";
+import { BedDouble, Bath, Square, MapPin, Flame, Rocket } from "lucide-react";
+
+import { getWatermarkedUrl } from "@/lib/cloudinary";
+
+interface PropertyCardProps {
+  property: {
+    id: string;
+    title: string;
+    price: number;
+    type: string;
+    category: string;
+    city: string;
+    address: string;
+    bedrooms: number | null;
+    bathrooms: number | null;
+    area: number | null;
+    images: string[];
+    status: string;
+    label: string;
+  };
+}
+
+export function PropertyCard({ property }: PropertyCardProps) {
+  // Format price to PKR
+  const formattedPrice = new Intl.NumberFormat("en-PK", {
+    style: "currency",
+    currency: "PKR",
+    maximumFractionDigits: 0,
+  }).format(property.price);
+
+  // Fallback placeholder image
+  const coverImage =
+    property.images.length > 0
+      ? property.images[0]
+      : "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+
+  return (
+    <Link 
+      href={`/properties/${property.id}`}
+      className="group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-lg shadow-primary-900/5 hover:shadow-xl hover:shadow-primary-900/15 transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-primary-100"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
+        <Image
+          src={getWatermarkedUrl(coverImage)}
+          alt={property.title}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/60 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        {/* Top Badges */}
+        <div className="absolute top-4 left-4 flex flex-col gap-2">
+           <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold text-primary-900 shadow-sm uppercase tracking-widest">
+            For {property.type}
+          </span>
+          {property.status !== "AVAILABLE" && (
+            <span className="inline-flex items-center rounded-full bg-red-500/90 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold text-white shadow-sm uppercase tracking-widest">
+              {property.status}
+            </span>
+          )}
+          {property.label === "SUPER_HOT" && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-red-600/90 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold text-white shadow-[0_0_15px_rgba(220,38,38,0.5)] uppercase tracking-widest animate-pulse">
+              <Rocket className="h-3 w-3" /> Super Hot
+            </span>
+          )}
+          {property.label === "HOT" && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/90 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold text-white shadow-[0_0_15px_rgba(249,115,22,0.4)] uppercase tracking-widest">
+              <Flame className="h-3 w-3" /> Hot
+            </span>
+          )}
+        </div>
+        
+        {/* Hover Gradient Overlay for Text Visibility if we wanted it on the image, but text is below */}
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-6 relative">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-1.5 text-xs text-primary-500 font-semibold uppercase tracking-wider mb-2">
+              <MapPin className="h-3.5 w-3.5" />
+              <span className="line-clamp-1">{property.city}</span>
+            </div>
+            <h3 className="text-xl font-extrabold text-primary-950 line-clamp-1 group-hover:text-accent-600 transition-colors leading-tight">
+              {property.title}
+            </h3>
+          </div>
+        </div>
+        
+        <p className="text-2xl font-black text-accent-500 mb-6 tracking-tight">
+          {formattedPrice}
+        </p>
+
+        {/* Features Row */}
+        <div className="flex items-center gap-5 mt-auto pt-5 border-t border-primary-50/50">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+              <BedDouble className="h-4 w-4" />
+            </div>
+            <span className="text-sm font-bold text-primary-900">
+              {property.bedrooms || "-"}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+              <Bath className="h-4 w-4" />
+            </div>
+            <span className="text-sm font-bold text-primary-900">
+              {property.bathrooms || "-"}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+              <Square className="h-4 w-4" />
+            </div>
+            <span className="text-sm font-bold text-primary-900">
+              {property.area ? `${property.area} sqft` : "-"}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
