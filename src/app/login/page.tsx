@@ -95,13 +95,14 @@ export default function LoginPage() {
           {/* Header */}
           <div className="mb-10 text-center lg:text-left">
             <div className="lg:hidden flex justify-center mb-6">
-              <div className="h-16 w-16 rounded-full overflow-hidden border border-primary-200 bg-white shadow-sm">
+              <div className="h-20 w-auto">
                 <Image
                   src="/logo.png"
                   alt="Al-Arz Logo"
-                  width={64}
-                  height={64}
-                  className="h-full w-full object-contain p-1"
+                  width={240}
+                  height={96}
+                  quality={100}
+                  className="h-full w-auto object-contain p-1"
                 />
               </div>
             </div>

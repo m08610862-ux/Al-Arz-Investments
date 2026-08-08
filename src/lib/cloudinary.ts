@@ -13,10 +13,12 @@ export function getWatermarkedUrl(originalUrl: string | null | undefined): strin
     // g_south_east  : Position at Bottom Right
     // o_70          : Set opacity to 70%
     // x_20, y_20    : 20px padding from the edges
+    // Base optimization: limit width to 1200px, auto format (webp/avif), auto quality
+    const baseTransform = "c_limit,w_1200,f_auto,q_auto";
     const watermarkTransform = "l_text:Arial_60_bold:Al-Arz,co_white,g_south_east,o_70,x_20,y_20";
     
-    // Inject the transformation directly after /upload/
-    return originalUrl.replace("/upload/", `/upload/${watermarkTransform}/`);
+    // Inject both transformations directly after /upload/
+    return originalUrl.replace("/upload/", `/upload/${baseTransform}/${watermarkTransform}/`);
   }
   
   // Return original if it's not a standard Cloudinary URL (e.g. Unsplash)

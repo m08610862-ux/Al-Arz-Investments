@@ -63,10 +63,11 @@ export default async function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=70"
             alt="Luxury Home Exterior"
             fill
             className="object-cover object-center scale-105"
+            sizes="100vw"
             priority
           />
           {/* Multi-layer gradient for cinematic depth */}
@@ -187,7 +188,7 @@ export default async function Home() {
             {/* 1. Houses for Sale/Purchase */}
             <div className="group relative overflow-hidden rounded-3xl min-h-[340px]">
               <Image
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
                 alt="Houses for Sale/Purchase"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -211,7 +212,7 @@ export default async function Home() {
             {/* 2. Residential and Commercial Plots */}
             <div className="group relative overflow-hidden rounded-3xl min-h-[340px]">
               <Image
-                src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
                 alt="Residential and Commercial Plots"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -235,7 +236,7 @@ export default async function Home() {
             {/* 3. Commercial Properties */}
             <div className="group relative overflow-hidden rounded-3xl min-h-[340px]">
               <Image
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
                 alt="Commercial Properties"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"

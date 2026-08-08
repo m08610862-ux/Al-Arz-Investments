@@ -33,23 +33,16 @@ export function Footer({ siteSettings }: { siteSettings: any }) {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <div className="space-y-5">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="h-14 w-14 rounded-full overflow-hidden border-2 border-primary-500/30 shrink-0">
+            <Link href="/" className="flex items-center group">
+              <div className="h-16 md:h-20 w-auto shrink-0">
                 <Image
                   src="/logo.png"
                   alt="Al-Arz Investments"
-                  width={56}
-                  height={56}
-                  className="h-full w-full object-contain"
+                  width={240}
+                  height={96}
+                  quality={100}
+                  className="h-full w-auto object-contain"
                 />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold text-white leading-tight tracking-tight">
-                  Al-Arz
-                </span>
-                <span className="text-[10px] font-medium text-primary-400 uppercase tracking-widest leading-none">
-                  Investments
-                </span>
               </div>
             </Link>
             <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">

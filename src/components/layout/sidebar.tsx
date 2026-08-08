@@ -53,22 +53,22 @@ export function Sidebar({ role, user, children }: SidebarProps) {
     <aside className="w-full md:w-64 bg-primary-900 border-r border-primary-800 shrink-0 flex flex-col text-primary-100 shadow-xl z-20">
       
       {/* Header with Logo */}
-      <div className="p-6 border-b border-primary-800 flex items-center gap-4">
+      <div className="p-6 border-b border-primary-800 flex flex-col items-center justify-center gap-3">
         <Link href="/" className="shrink-0">
-          <div className="h-12 w-12 rounded-full bg-white overflow-hidden border-2 border-primary-700 shadow-md flex items-center justify-center">
+          <div className="h-16 w-auto flex items-center justify-center">
             <Image
               src="/logo.png"
               alt="Al-Arz Investments"
-              width={44}
-              height={44}
-              className="object-contain"
+              width={200}
+              height={80}
+              quality={100}
+              className="h-full w-auto object-contain"
               priority
             />
           </div>
         </Link>
-        <div className="flex flex-col overflow-hidden">
-          <span className="font-black text-base text-white leading-tight tracking-tight">Al-Arz</span>
-          <span className="font-bold text-[10px] text-accent-400 uppercase tracking-widest leading-none mt-0.5">
+        <div className="flex flex-col overflow-hidden text-center">
+          <span className="font-bold text-[10px] text-accent-400 uppercase tracking-widest leading-none">
             {panelTitle}
           </span>
         </div>

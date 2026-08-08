@@ -45,13 +45,14 @@ export default async function AboutPage() {
         </div>
         
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10 text-white mb-8 backdrop-blur-md border border-white/20 p-2 shadow-2xl">
+          <div className="mx-auto flex h-32 w-auto items-center justify-center mb-8">
             <Image
               src="/logo.png"
               alt="Al-Arz Logo"
-              width={64}
-              height={64}
-              className="h-full w-full object-contain"
+              width={300}
+              height={120}
+              quality={100}
+              className="h-full w-auto object-contain"
             />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6">

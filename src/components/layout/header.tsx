@@ -98,20 +98,17 @@ export function Header({ siteSettings }: { siteSettings: any }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-primary-100 shadow-sm group-hover:border-accent-400 group-hover:shadow-md transition-all">
+          <Link href="/" className="flex items-center group">
+            <div className="h-16 md:h-20 w-auto transition-transform group-hover:scale-105">
               <Image
                 src="/logo.png"
                 alt="Al-Arz Logo"
-                width={48}
-                height={48}
-                className="h-full w-full object-contain bg-white"
+                width={240}
+                height={96}
+                quality={100}
+                className="h-full w-auto object-contain"
                 priority
               />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-primary-900 leading-none">Al-Arz</span>
-              <span className="text-[10px] sm:text-xs font-bold tracking-widest text-accent-500 uppercase mt-1">Investments</span>
             </div>
           </Link>
 

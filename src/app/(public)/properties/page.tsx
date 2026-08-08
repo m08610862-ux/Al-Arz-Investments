@@ -119,10 +119,11 @@ export default async function PropertiesPage({
       {/* Hero Section */}
       <section className="relative py-28 sm:py-36 overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+          src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=70"
           alt="Premium Real Estate Listings"
           fill
           className="object-cover object-center"
+          sizes="100vw"
           priority
         />
         {/* Multi-layer gradient for depth */}
