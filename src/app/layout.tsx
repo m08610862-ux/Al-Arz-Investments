@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SplashScreen } from "@/components/ui/splash-screen";
 
 import "./globals.css";
 
@@ -45,6 +46,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col bg-primary-50">
+        <SplashScreen />
         <main className="flex-1 flex flex-col">{children}</main>
       </body>
     </html>

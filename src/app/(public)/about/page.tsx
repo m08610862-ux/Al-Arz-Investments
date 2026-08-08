@@ -191,74 +191,85 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 5. CEO Spotlight */}
-      <section className="bg-primary-50 py-24 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-100/40 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-100/60 rounded-full blur-[100px] pointer-events-none" />
-
+      {/* 5. CEO Spotlight (Editorial Layout) */}
+      <section className="bg-primary-900 py-32 relative overflow-hidden text-white">
+        {/* Subtle background glow */}
+        <div className="absolute top-1/4 -right-1/4 w-[800px] h-[800px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none" />
+        
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <span className="text-accent-500 font-bold tracking-wider uppercase text-sm mb-4 block">
-              Leadership
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-primary-900">Meet Our Founder</h2>
-            <p className="mt-4 text-lg text-primary-600">The visionary driving Al-Arz Investments forward.</p>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            
+            {/* Left: Editorial Style Image */}
+            <div className="relative max-w-sm mx-auto lg:mx-0 w-full flex justify-center lg:justify-start">
+              <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl bg-primary-800">
+                <Image
+                  src="/ceo.png"
+                  alt="Fahad bin Tariq — Founder & CEO"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={100}
+                  priority
+                />
+              </div>
+              {/* Decorative Accents */}
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-accent-500/20 rounded-full -z-10 blur-2xl" />
+              <div className="absolute top-8 -right-8 w-32 h-32 bg-primary-500/20 rounded-full -z-10 blur-2xl" />
+            </div>
 
-          <div className="max-w-4xl mx-auto bg-white rounded-[32px] shadow-xl shadow-primary-900/8 border border-primary-100 overflow-hidden">
-            <div className="flex flex-col md:flex-row items-center gap-0">
+            {/* Right: Content */}
+            <div className="flex flex-col">
+              <span className="text-accent-400 font-bold tracking-[0.2em] uppercase text-sm mb-6 flex items-center gap-4">
+                <span className="w-12 h-px bg-accent-400/50"></span>
+                Leadership
+              </span>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-3">
+                Fahad bin Tariq
+              </h2>
+              <p className="text-primary-400 text-lg mb-8 font-semibold uppercase tracking-widest">
+                Founder &amp; CEO
+              </p>
               
-              {/* Left — Photo */}
-              <div className="relative w-full md:w-80 shrink-0 bg-gradient-to-br from-primary-900 to-primary-800 flex items-center justify-center py-12 px-8 md:self-stretch">
-                <div className="relative h-52 w-52 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl ring-4 ring-accent-400/20">
-                  <Image
-                    src="/ceo.png"
-                    alt="Fahad bin Tariq — Founder & CEO of Al-Arz Investments"
-                    fill
-                    className="object-cover object-top"
-                    sizes="208px"
-                    priority
-                  />
-                </div>
-                {/* Decorative orb */}
-                <div className="absolute top-8 right-8 w-16 h-16 bg-accent-400/10 rounded-full blur-xl" />
-                <div className="absolute bottom-8 left-8 w-24 h-24 bg-white/5 rounded-full blur-2xl" />
+              <div className="relative mb-12">
+                <span className="absolute -top-6 -left-4 text-7xl text-primary-800/50 font-serif leading-none select-none">"</span>
+                <p className="text-primary-200 text-xl md:text-2xl font-medium leading-relaxed italic relative z-10">
+                  Our mission is to redefine real estate in Pakistan by bringing transparency, innovation, and unmatched client dedication to every transaction.
+                </p>
               </div>
 
-              {/* Right — Info */}
-              <div className="flex-1 p-8 sm:p-12">
-                <div className="inline-flex items-center gap-2 rounded-full bg-accent-50 border border-accent-100 px-4 py-1.5 text-xs font-bold text-accent-700 uppercase tracking-widest mb-5">
-                  Founder &amp; CEO
+              {/* Credentials Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
+                <div className="flex items-start gap-5">
+                  <div className="mt-1 shrink-0 text-accent-400 bg-accent-400/10 p-3 rounded-xl border border-accent-400/20">
+                    <Briefcase className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xl text-white mb-1">8+ Years</h4>
+                    <p className="text-primary-400 text-sm font-medium">Real Estate Experience</p>
+                  </div>
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-black text-primary-950 tracking-tight mb-1">
-                  Fahad bin Tariq
-                </h3>
-                <p className="text-primary-500 font-semibold text-sm mb-8">Al-Arz Investments</p>
-
-                {/* Credentials */}
-                <div className="space-y-4 mb-10">
-                  <div className="flex items-center gap-3.5">
-                    <div className="h-9 w-9 rounded-xl bg-primary-50 flex items-center justify-center text-accent-500 shrink-0 border border-primary-100">
-                      <Briefcase className="h-4.5 w-4.5 h-4 w-4" />
-                    </div>
-                    <p className="text-primary-800 font-semibold">8+ Years in Real Estate</p>
+                
+                <div className="flex items-start gap-5">
+                  <div className="mt-1 shrink-0 text-accent-400 bg-accent-400/10 p-3 rounded-xl border border-accent-400/20">
+                    <Star className="h-6 w-6" />
                   </div>
-                  <div className="flex items-center gap-3.5">
-                    <div className="h-9 w-9 rounded-xl bg-primary-50 flex items-center justify-center text-accent-500 shrink-0 border border-primary-100">
-                      <Star className="h-4 w-4" />
-                    </div>
-                    <p className="text-primary-800 font-semibold">Trusted Estate Advisor</p>
-                  </div>
-                  <div className="flex items-center gap-3.5">
-                    <div className="h-9 w-9 rounded-xl bg-primary-50 flex items-center justify-center text-accent-500 shrink-0 border border-primary-100">
-                      <MapPin className="h-4 w-4" />
-                    </div>
-                    <p className="text-primary-800 font-semibold">Rawalpindi &amp; Islamabad</p>
+                  <div>
+                    <h4 className="font-bold text-xl text-white mb-1">Trusted Advisor</h4>
+                    <p className="text-primary-400 text-sm font-medium">Proven track record</p>
                   </div>
                 </div>
 
-
+                <div className="flex items-start gap-5">
+                  <div className="mt-1 shrink-0 text-accent-400 bg-accent-400/10 p-3 rounded-xl border border-accent-400/20">
+                    <MapPin className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xl text-white mb-1">Local Expert</h4>
+                    <p className="text-primary-400 text-sm font-medium">Rawalpindi &amp; Islamabad</p>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>
