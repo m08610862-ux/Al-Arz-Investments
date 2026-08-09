@@ -12,6 +12,8 @@ interface PropertyCardProps {
     type: string;
     category: string;
     city: string;
+    society?: string | null;
+    phase?: string | null;
     address: string;
     bedrooms: number | null;
     bathrooms: number | null;
@@ -82,8 +84,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-1.5 text-xs text-primary-500 font-semibold uppercase tracking-wider mb-2">
-              <MapPin className="h-3.5 w-3.5" />
-              <span className="line-clamp-1">{property.city}</span>
+              <MapPin className="h-3.5 w-3.5 shrink-0" />
+              <span className="line-clamp-1 text-[10px] leading-tight">
+                {[property.address, property.phase, property.society, property.city].filter(Boolean).join(", ")}
+              </span>
             </div>
             <h3 className="text-xl font-extrabold text-primary-950 line-clamp-1 group-hover:text-accent-600 transition-colors leading-tight">
               {property.title}

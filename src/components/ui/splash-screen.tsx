@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 export function SplashScreen() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Start fade-out after 6s, fully gone at 7s
+    // Start fade-out after 4s, fully gone at 5s
     const fadeTimer = setTimeout(() => setFadeOut(true), 4000);
     const hideTimer = setTimeout(() => {
       setVisible(false);
@@ -20,7 +22,8 @@ export function SplashScreen() {
     };
   }, []);
 
-  if (!visible) return null;
+  // Only show on the homepage
+  if (pathname !== "/" || !visible) return null;
 
   return (
     <div

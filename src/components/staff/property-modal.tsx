@@ -13,11 +13,12 @@ type PropertyData = {
   category: string;
   address: string;
   city: string;
+  society: string | null;
+  phase: string | null;
   status: string;
   bedrooms: number | null;
   bathrooms: number | null;
   area: number | null;
-  featured: boolean;
   isActive: boolean;
   label: string;
   images: string[];
@@ -108,7 +109,29 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
 
             <div>
               <label className="label">City *</label>
-              <input name="city" required defaultValue={property?.city} className="input" placeholder="e.g. Islamabad" />
+              <select name="city" required defaultValue={property?.city ?? "Rawalpindi"} className="input">
+                <option value="Rawalpindi">Rawalpindi</option>
+                <option value="Islamabad">Islamabad</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="label">Society</label>
+              <select name="society" defaultValue={property?.society ?? ""} className="input">
+                <option value="">— None —</option>
+                <option value="DHA">DHA</option>
+                <option value="Bahria Town">Bahria Town</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="label">Phase</label>
+              <select name="phase" defaultValue={property?.phase ?? ""} className="input">
+                <option value="">— None —</option>
+                {[1,2,3,4,5,6,7,8].map(p => (
+                  <option key={p} value={`Phase ${p}`}>Phase {p}</option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -128,6 +151,7 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
                 <option value="COMMERCIAL">Commercial</option>
                 <option value="VILLA">Villa</option>
                 <option value="BUILDING">Building</option>
+                <option value="FARMHOUSE">Farmhouse</option>
               </select>
             </div>
 
@@ -153,8 +177,9 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
             </div>
 
             <div className="sm:col-span-2">
-              <label className="label">Address *</label>
-              <input name="address" required defaultValue={property?.address} className="input" placeholder="Street/Block/Phase details" />
+              <label className="label">House / Street Address *</label>
+              <input name="address" required defaultValue={property?.address} className="input" placeholder="e.g. House 12, Street 5, Block A" />
+              <p className="text-xs text-neutral-400 mt-1">City, Society &amp; Phase will be added automatically to complete the address.</p>
             </div>
 
             <div>
@@ -172,10 +197,6 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
               <input name="area" type="number" min="0" defaultValue={property?.area ?? ""} className="input" />
             </div>
 
-            <div className="flex items-center gap-3 pt-4">
-              <input name="featured" type="checkbox" id="featured" value="true" defaultChecked={property?.featured} className="h-4 w-4 rounded text-primary-600 border-neutral-300" />
-              <label htmlFor="featured" className="text-sm font-medium text-neutral-700">Mark as Featured</label>
-            </div>
 
             <div className="sm:col-span-2">
               <label className="label">Description</label>

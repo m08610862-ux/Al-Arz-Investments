@@ -3,21 +3,17 @@ import { PropertyCard } from "@/components/property/property-card";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export async function FeaturedProperties() {
-  const featured = await prisma.property.findMany({
+export async function LatestProperties() {
+  const properties = await prisma.property.findMany({
     where: {
-      featured: true,
       status: "AVAILABLE",
       isActive: true,
     },
-    take: 3,
-    orderBy: [
-      { label: "asc" },
-      { createdAt: "desc" }
-    ],
+    take: 6,
+    orderBy: { createdAt: "desc" }
   });
 
-  if (featured.length === 0) return null;
+  if (properties.length === 0) return null;
 
   return (
     <section className="py-20 sm:py-24 bg-primary-50">
@@ -25,10 +21,10 @@ export async function FeaturedProperties() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-primary-900 tracking-tight">
-              Featured Properties
+              Latest Properties
             </h2>
             <p className="mt-4 text-lg text-primary-600 max-w-2xl">
-              Explore our hand-picked selection of premium properties across Pakistan.
+              Explore our newest listings of premium properties across Pakistan.
             </p>
           </div>
           <Link
@@ -41,7 +37,7 @@ export async function FeaturedProperties() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featured.map((property) => (
+          {properties.map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>

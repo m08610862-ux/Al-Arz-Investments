@@ -6,8 +6,9 @@ import {
   Star, HeartHandshake, MessageCircle, Briefcase, MapPin, Key, UserCheck
 } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { HeroSearch } from "@/components/home/hero-search";
-import { FeaturedProperties } from "@/components/home/featured-properties";
+import { PropertyFilters } from "@/components/property/property-filters";
+import { HeroSlider } from "@/components/home/hero-slider";
+import { LatestProperties } from "@/components/home/latest-properties";
 import { TestimonialsSlider } from "@/components/home/testimonials-slider";
 
 export default async function Home() {
@@ -58,55 +59,13 @@ export default async function Home() {
 
   return (
     <>
-      {/* 1. HERO SECTION */}
-      <section className="relative min-h-[620px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=70"
-            alt="Luxury Home Exterior"
-            fill
-            className="object-cover object-center scale-105"
-            sizes="100vw"
-            priority
-          />
-          {/* Multi-layer gradient for cinematic depth */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-950/95 via-primary-900/80 to-primary-800/70" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-transparent to-transparent" />
-        </div>
+      {/* 1. HERO SECTION — Image Slider */}
+      <HeroSlider>
+        <PropertyFilters />
+      </HeroSlider>
 
-        {/* Glowing accent orb */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-accent-500/8 rounded-full blur-[140px] pointer-events-none" />
-
-        <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 flex flex-col items-center text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-accent-500/15 border border-accent-400/25 backdrop-blur-sm px-5 py-2 text-xs font-bold text-accent-300 uppercase tracking-widest mb-8">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-400 animate-pulse" />
-            <Building2 className="h-3.5 w-3.5" />
-            Pakistan&apos;s Premium Real Estate Partner
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tight leading-[0.9] mb-6">
-            Find Your<br />
-            <span className="text-accent-400">Dream Home</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="mt-4 text-lg sm:text-xl text-primary-300 leading-relaxed max-w-2xl font-medium">
-            Discover premium properties across Pakistan — from luxurious homes
-            to high-yield investments. Let Al-Arz Investments guide you home.
-          </p>
-
-          {/* Search Bar */}
-          <div className="mt-12 w-full max-w-4xl mx-auto">
-            <HeroSearch />
-          </div>
-        </div>
-      </section>
-
-      {/* 2. FEATURED PROPERTIES (Server Component) */}
-      <FeaturedProperties />
+      {/* 2. LATEST PROPERTIES (Server Component) */}
+      <LatestProperties />
 
       {/* 3. WHY CHOOSE US */}
       <section className="py-24 bg-primary-50">

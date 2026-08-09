@@ -54,8 +54,8 @@ export function Sidebar({ role, user, children }: SidebarProps) {
       
       {/* Header with Logo */}
       <div className="p-6 border-b border-primary-800 flex flex-col items-center justify-center gap-3">
-        <Link href="/" className="shrink-0">
-          <div className="h-16 w-auto flex items-center justify-center">
+        <Link href="/" className="shrink-0 group">
+          <div className="h-16 w-fit bg-white px-4 py-2 rounded-xl shadow-md flex items-center justify-center group-hover:shadow-lg transition-shadow">
             <Image
               src="/logo.png"
               alt="Al-Arz Investments"

@@ -79,7 +79,6 @@ export function MyPropertiesTable({ properties }: { properties: Property[] }) {
           <table className="w-full text-left text-sm text-neutral-600">
             <thead className="bg-neutral-50 text-neutral-900 border-b border-neutral-200">
               <tr>
-                <th className="px-4 py-4 font-semibold w-8"></th>
                 <th className="px-4 py-4 font-semibold w-28 text-center">Visibility</th>
                 <th className="px-6 py-4 font-semibold min-w-[200px]">Property</th>
                 <th className="px-6 py-4 font-semibold">Price</th>
@@ -91,9 +90,7 @@ export function MyPropertiesTable({ properties }: { properties: Property[] }) {
             <tbody className="divide-y divide-neutral-100">
               {properties.map((property) => (
                 <tr key={property.id} className={`hover:bg-neutral-50 transition-colors ${!property.isActive ? "opacity-50" : ""}`}>
-                  <td className="px-4 py-4">
-                    {property.featured && <Star className="h-4 w-4 text-yellow-400 fill-current" />}
-                  </td>
+
 
                   {/* Active/Inactive Toggle */}
                   <td className="px-4 py-4 text-center">

@@ -76,20 +76,20 @@ export function Header({ siteSettings }: { siteSettings: any }) {
             <div className="flex items-center gap-6">
               <a
                 href={`tel:${(siteSettings?.phone || "").replace(/[^0-9+]/g, "")}`}
-                className="flex items-center gap-2 text-primary-200 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-white hover:text-white/80 transition-colors"
               >
                 <Phone className="h-3.5 w-3.5" />
                 {siteSettings?.phone}
               </a>
               <a
                 href={`mailto:${siteSettings?.email}`}
-                className="flex items-center gap-2 text-primary-200 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-white hover:text-white/80 transition-colors"
               >
                 <Mail className="h-3.5 w-3.5" />
                 {siteSettings?.email}
               </a>
             </div>
-            <div className="text-primary-300">Pakistan&apos;s Premium Real Estate Partner</div>
+            <div className="text-white">Pakistan&apos;s Premium Real Estate Partner</div>
           </div>
         </div>
       </div>

@@ -158,6 +158,8 @@ model Property {
   category    PropertyCategory    // HOUSE, APARTMENT, PLOT, etc.
   address     String
   city        String
+  society     String?             // e.g. DHA, Bahria Town
+  phase       String?             // e.g. Phase 1, Phase 2
   bedrooms    Int?
   bathrooms   Int?
   area        Float?              // in sq ft or marla
@@ -183,6 +185,8 @@ model Property {
   updatedAt DateTime @updatedAt
 
   @@index([city])
+  @@index([society])
+  @@index([phase])
   @@index([status])
   @@index([type])
   @@index([category])

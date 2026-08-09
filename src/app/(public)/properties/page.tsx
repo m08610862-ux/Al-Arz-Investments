@@ -16,9 +16,12 @@ export const metadata: Metadata = {
 
 const searchParamsSchema = z.object({
   page: z.coerce.number().int().positive().catch(1),
+  query: z.string().optional().catch(undefined),
   city: z.string().catch(""),
   type: z.enum(["SALE", "RENT"]).optional().catch(undefined),
   category: z.enum(["HOUSE", "APARTMENT", "PLOT", "COMMERCIAL", "FARMHOUSE", "VILLA", "BUILDING"]).optional().catch(undefined),
+  society: z.string().optional().catch(undefined),
+  phase: z.string().optional().catch(undefined),
   bedrooms: z.coerce.number().int().nonnegative().optional().catch(undefined),
   minPrice: z.coerce.number().nonnegative().optional().catch(undefined),
   maxPrice: z.coerce.number().nonnegative().optional().catch(undefined),
@@ -54,11 +57,17 @@ export default async function PropertiesPage({
     isActive: true,
   };
 
+  if (parsed.query) {
+    whereClause.OR = [
+      { title: { contains: parsed.query, mode: "insensitive" } },
+      { address: { contains: parsed.query, mode: "insensitive" } },
+      { city: { contains: parsed.query, mode: "insensitive" } },
+      { society: { contains: parsed.query, mode: "insensitive" } },
+    ];
+  }
+
   if (parsed.city) {
-    whereClause.city = {
-      contains: parsed.city,
-      mode: "insensitive",
-    };
+    whereClause.city = parsed.city;
   }
 
   if (parsed.type) {
@@ -67,6 +76,14 @@ export default async function PropertiesPage({
 
   if (parsed.category) {
     whereClause.category = parsed.category;
+  }
+
+  if (parsed.society) {
+    whereClause.society = parsed.society;
+  }
+
+  if (parsed.phase) {
+    whereClause.phase = parsed.phase;
   }
 
   if (parsed.bedrooms !== undefined) {
@@ -99,7 +116,7 @@ export default async function PropertiesPage({
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
   // Check if any filters are active
-  const hasActiveFilters = !!(parsed.city || parsed.type || parsed.category || parsed.bedrooms || parsed.minPrice || parsed.maxPrice);
+  const hasActiveFilters = !!(parsed.query || parsed.city || parsed.type || parsed.category || parsed.society || parsed.phase || parsed.bedrooms || parsed.minPrice || parsed.maxPrice);
 
   // Helper function to build pagination URLs
   const createPageUrl = (pageNumber: number) => {
@@ -134,22 +151,22 @@ export default async function PropertiesPage({
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-accent-500/15 border border-accent-400/30 backdrop-blur-sm px-5 py-2 text-xs font-bold text-accent-300 uppercase tracking-widest mb-6">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/20 border border-white/50 backdrop-blur-sm px-5 py-2.5 text-sm font-bold text-white uppercase tracking-widest mb-6 shadow-lg">
+            <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
             {totalCount} Active Listings
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 leading-[0.95]">
             Find Your<br />
             <span className="text-accent-400">Dream Property</span>
           </h1>
-          <p className="text-lg sm:text-xl text-primary-300 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-lg sm:text-xl text-white max-w-2xl mx-auto font-medium leading-relaxed">
             Browse our handpicked portfolio of premium houses, apartments, and commercial spaces across Pakistan.
           </p>
         </div>
       </section>
 
-      {/* Floating Filter Bar */}
-      <div className="sticky top-20 z-40 -mt-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Filter Bar (Static, non-sticky) */}
+      <div className="relative z-20 -mt-8 mb-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <PropertyFilters />
       </div>
 

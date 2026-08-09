@@ -73,7 +73,6 @@ export function PropertyTable({
           <table className="w-full text-left text-sm text-neutral-600">
             <thead className="bg-neutral-50 text-neutral-900 border-b border-neutral-200">
               <tr>
-                <th className="px-4 py-4 font-semibold w-12 text-center">⭐</th>
                 <th className="px-4 py-4 font-semibold w-24 text-center">Visible</th>
                 <th className="px-6 py-4 font-semibold min-w-[200px]">Title & Location</th>
                 <th className="px-6 py-4 font-semibold">Price</th>
@@ -85,20 +84,6 @@ export function PropertyTable({
             <tbody className="divide-y divide-neutral-100">
               {properties.map((property) => (
                 <tr key={property.id} className={`hover:bg-neutral-50 transition-colors ${!property.isActive ? "opacity-50" : ""}`}>
-                  {/* Featured Star */}
-                  <td className="px-4 py-4 text-center">
-                    <button
-                      disabled={loadingId === property.id}
-                      onClick={() => handleToggleFeature(property.id, property.featured)}
-                      title={property.featured ? "Remove from featured" : "Mark as featured"}
-                      className={`transition-colors ${
-                        property.featured ? "text-yellow-400 hover:text-yellow-500" : "text-neutral-300 hover:text-yellow-400"
-                      }`}
-                    >
-                      <Star className="h-5 w-5 fill-current" />
-                    </button>
-                  </td>
-
                   {/* Active/Inactive Toggle */}
                   <td className="px-4 py-4 text-center">
                     <button

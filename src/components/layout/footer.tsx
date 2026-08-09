@@ -33,8 +33,8 @@ export function Footer({ siteSettings }: { siteSettings: any }) {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <div className="space-y-5">
-            <Link href="/" className="flex items-center group">
-              <div className="h-16 md:h-20 w-auto shrink-0">
+            <Link href="/" className="inline-block group">
+              <div className="h-20 md:h-24 w-fit bg-white px-6 py-3 rounded-2xl shadow-lg border border-neutral-200 flex items-center justify-center shrink-0">
                 <Image
                   src="/logo.png"
                   alt="Al-Arz Investments"

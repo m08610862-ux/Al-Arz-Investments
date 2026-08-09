@@ -113,7 +113,9 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             
             <div className="mt-4 flex items-center gap-2 text-primary-100">
               <MapPin className="h-5 w-5 shrink-0" />
-              <p className="text-lg">{property.address}, {property.city}</p>
+              <p className="text-lg">
+                {[property.address, property.phase, property.society, property.city].filter(Boolean).join(", ")}
+              </p>
             </div>
           </div>
         </div>

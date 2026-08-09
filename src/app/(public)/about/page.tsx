@@ -12,13 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  // Fetch dynamic stats from database
-  const [soldPropertiesCount, cities] = await Promise.all([
-    prisma.property.count({ where: { status: "SOLD" } }),
-    prisma.property.findMany({ select: { city: true }, distinct: ["city"] }),
-  ]);
-
-  const citiesCount = cities.length > 0 ? cities.length : 1; // Fallback if DB is empty
+  const citiesCount = 2; // Hardcoded to 2 as per requirement
 
   // Fetch all active staff
   const staffMembers = await prisma.user.findMany({
@@ -41,7 +35,7 @@ export default async function AboutPage() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-primary-900/80"></div>
+          <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px]"></div>
         </div>
         
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
@@ -55,10 +49,10 @@ export default async function AboutPage() {
               className="h-full w-auto object-contain"
             />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6">
+          <h1 className="text-4xl font-bold tracking-tight text-primary-900 sm:text-6xl mb-6">
             Al-Arz Investments
           </h1>
-          <p className="mx-auto max-w-2xl text-xl text-primary-100 font-medium">
+          <p className="mx-auto max-w-2xl text-xl text-primary-700 font-medium">
             {aboutConfig.hero.tagline}
           </p>
         </div>
@@ -101,7 +95,7 @@ export default async function AboutPage() {
                 <Star className="h-8 w-8" />
               </div>
               <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={Number(aboutConfig.stats.yearsInBusiness)} suffix="+" />
+                <AnimatedCounter end={8} suffix="+" />
               </p>
               <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Years in Business</p>
             </div>
@@ -111,7 +105,7 @@ export default async function AboutPage() {
                 <Home className="h-8 w-8" />
               </div>
               <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={soldPropertiesCount} suffix="+" />
+                <AnimatedCounter end={500} suffix="+" />
               </p>
               <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Properties Sold</p>
             </div>
@@ -121,7 +115,7 @@ export default async function AboutPage() {
                 <Smile className="h-8 w-8" />
               </div>
               <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={Number(aboutConfig.stats.happyClients)} suffix="+" />
+                <AnimatedCounter end={1200} suffix="+" />
               </p>
               <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Happy Clients</p>
             </div>

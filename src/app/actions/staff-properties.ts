@@ -34,7 +34,8 @@ const propertySchema = z.object({
   bedrooms: intOrNull,
   bathrooms: intOrNull,
   area: numberOrNull,
-  featured: z.preprocess((val) => val === "true", z.boolean()),
+  society: z.string().nullable().optional(),
+  phase: z.string().nullable().optional(),
   label: z.nativeEnum(PropertyLabel).default("NONE"),
   images: z.string().transform((val) => {
     try {

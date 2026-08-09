@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Trash2, Plus, X, MessageCircle, Save, ChevronDown } from "lucide-react";
 import { reassignLead, updateLeadStatus, deleteLead, adminCreateLead, adminUpdateLeadNotes } from "@/app/actions/admin-clients";
 import { ClientStatus, LeadSource } from "@prisma/client";
@@ -299,8 +299,8 @@ export function ClientTable({
             </thead>
             <tbody className="divide-y divide-neutral-100">
               {filtered.map(lead => (
-                <>
-                  <tr key={lead.id} className="hover:bg-neutral-50 transition-colors">
+                <React.Fragment key={lead.id}>
+                  <tr className="hover:bg-neutral-50 transition-colors">
                     <td className="px-6 py-4">
                       <p className="font-semibold text-neutral-900">{lead.name}</p>
                       <a href={`tel:${lead.phone}`} className="text-xs text-primary-600 hover:underline">{lead.phone}</a>
@@ -373,7 +373,7 @@ export function ClientTable({
                     </td>
                   </tr>
                   {expandedId === lead.id && (
-                    <tr key={`${lead.id}-notes`} className="bg-neutral-50">
+                    <tr className="bg-neutral-50">
                       <td colSpan={6} className="px-6 py-4 border-b border-neutral-100">
                         <label className="block text-xs font-bold text-neutral-500 uppercase tracking-wide mb-2">Internal Notes</label>
                         <textarea
@@ -398,7 +398,7 @@ export function ClientTable({
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
               {filtered.length === 0 && (
                 <tr>

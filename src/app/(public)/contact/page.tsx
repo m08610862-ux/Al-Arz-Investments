@@ -112,7 +112,7 @@ export default async function ContactPage() {
             {/* Map */}
             <div className="flex-1 relative min-h-[400px]">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106297.02524317072!2d72.98066539999999!3d33.6844202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfbfd07891722f%3A0x6059515c3bdb02b6!2sIslamabad%2C%20Islamabad%20Capital%20Territory%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" 
+                src="https://maps.google.com/maps?q=33.5260278,73.1559722&hl=en&z=16&output=embed" 
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
