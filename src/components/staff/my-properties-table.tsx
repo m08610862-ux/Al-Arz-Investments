@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, Trash2, Plus, Star, Eye, EyeOff, Flame, Rocket } from "lucide-react";
+import { Edit2, Trash2, Plus, Eye, EyeOff, Flame, Rocket } from "lucide-react";
 import { PropertyModal } from "./property-modal";
 import { deleteProperty, togglePropertyActiveStatus } from "@/app/actions/staff-properties";
 
@@ -18,7 +18,8 @@ type Property = {
   bedrooms: number | null;
   bathrooms: number | null;
   area: number | null;
-  featured: boolean;
+  society: string | null;
+  phase: string | null;
   isActive: boolean;
   label: string;
   images: string[];

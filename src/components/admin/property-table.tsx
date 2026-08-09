@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Trash2, Eye, EyeOff, Flame, Rocket } from "lucide-react";
-import { togglePropertyFeature, deleteProperty, reassignProperty, adminTogglePropertyActiveStatus } from "@/app/actions/admin-properties";
+import { Trash2, Eye, EyeOff, Flame, Rocket } from "lucide-react";
+import { deleteProperty, reassignProperty, adminTogglePropertyActiveStatus } from "@/app/actions/admin-properties";
 import Link from "next/link";
 
 type Staff = { id: string; name: string };
@@ -14,7 +14,6 @@ type PropertyList = {
   city: string;
   type: string;
   status: string;
-  featured: boolean;
   isActive: boolean;
   label: string;
   assignedTo: Staff | null;
@@ -30,11 +29,6 @@ export function PropertyTable({
 }) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
-  const handleToggleFeature = async (id: string, currentlyFeatured: boolean) => {
-    setLoadingId(id);
-    await togglePropertyFeature(id, !currentlyFeatured);
-    setLoadingId(null);
-  };
 
   const handleToggleActive = async (id: string, currentlyActive: boolean) => {
     setLoadingId(id);

@@ -13,7 +13,6 @@ export default async function AdminPropertiesPage() {
       city: true,
       type: true,
       status: true,
-      featured: true,
       isActive: true,
       label: true,
       assignedTo: { select: { id: true, name: true } },
