@@ -17,7 +17,7 @@ export default async function AboutPage() {
   // Fetch all active staff
   const staffMembers = await prisma.user.findMany({
     where: { role: "STAFF" },
-    select: { id: true, name: true, phone: true, image: true },
+    select: { id: true, name: true, phone: true, image: true, designation: true },
     orderBy: { createdAt: "asc" },
   });
 
@@ -238,7 +238,7 @@ export default async function AboutPage() {
                     <Briefcase className="h-6 w-6" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xl text-white mb-1">8+ Years</h4>
+                    <h4 className="font-bold text-xl text-white mb-1">9+ Years</h4>
                     <p className="text-primary-400 text-sm font-medium">Real Estate Experience</p>
                   </div>
                 </div>
@@ -311,7 +311,9 @@ export default async function AboutPage() {
 
                   {/* Name & Title */}
                   <h3 className="text-xl font-bold text-primary-900 leading-tight">{staff.name}</h3>
-                  <p className="text-xs font-semibold text-accent-500 uppercase tracking-widest mt-1 mb-4">Property Consultant</p>
+                  <p className="text-xs font-semibold text-accent-500 uppercase tracking-widest mt-1 mb-4">
+                    {staff.designation || "Property Consultant"}
+                  </p>
 
                   {/* Animated Divider */}
                   <div className="w-8 h-0.5 bg-primary-200 rounded-full mb-6 group-hover:bg-accent-400 group-hover:w-16 transition-all duration-300" />
@@ -337,36 +339,6 @@ export default async function AboutPage() {
         </div>
       </section>
 
-
-      {/* 6. Our Office Gallery */}
-      <section className="bg-primary-900 py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white mb-4">Inside Al-Arz</h2>
-            <p className="text-primary-300">Visit us at our headquarters in Islamabad.</p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-              "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-              "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-              "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-            ].map((url, i) => (
-              <div key={i} className="relative aspect-square rounded-2xl overflow-hidden group">
-                <Image
-                  src={url}
-                  alt={`Office view ${i + 1}`}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Bottom CTA */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="bg-primary-50 rounded-[3rem] p-10 sm:p-20 relative overflow-hidden border border-primary-100 shadow-xl shadow-primary-900/5">

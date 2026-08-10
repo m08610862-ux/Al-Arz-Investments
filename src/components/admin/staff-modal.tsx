@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User, Mail, Phone, Lock, X } from "lucide-react";
+import { User, Mail, Phone, Lock, X, Briefcase } from "lucide-react";
 import { createStaff, updateStaff } from "@/app/actions/admin-staff";
 
 interface StaffData {
@@ -9,6 +9,7 @@ interface StaffData {
   name: string;
   email: string;
   phone: string;
+  designation?: string | null;
 }
 
 interface StaffModalProps {
@@ -111,6 +112,21 @@ export function StaffModal({ isOpen, onClose, staff }: StaffModalProps) {
                 />
               </div>
               <p className="mt-1 text-xs text-neutral-500">Must include country code for WhatsApp (e.g. 923...)</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
+                Role / Designation
+              </label>
+              <div className="relative">
+                <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+                <input
+                  name="designation"
+                  defaultValue={staff?.designation ?? ""}
+                  placeholder="e.g. Senior Property Agent"
+                  className="w-full rounded-xl border border-neutral-200 bg-neutral-50 pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
             </div>
 
             {!isEdit && (

@@ -11,6 +11,7 @@ type StaffMember = {
   email: string;
   phone: string | null;
   isActive: boolean;
+  designation: string | null;
   createdAt: Date;
 };
 
@@ -68,7 +69,12 @@ export function StaffTable({ staffList }: { staffList: StaffMember[] }) {
             <tbody className="divide-y divide-neutral-100">
               {staffList.map((staff) => (
                 <tr key={staff.id} className="hover:bg-neutral-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-neutral-900">{staff.name}</td>
+                  <td className="px-6 py-4">
+                    <p className="font-medium text-neutral-900">{staff.name}</p>
+                    {staff.designation && (
+                      <p className="text-xs text-primary-500 font-medium mt-0.5">{staff.designation}</p>
+                    )}
+                  </td>
                   <td className="px-6 py-4">{staff.email}</td>
                   <td className="px-6 py-4">{staff.phone || <span className="text-neutral-400 italic">Not set</span>}</td>
                   <td className="px-6 py-4">

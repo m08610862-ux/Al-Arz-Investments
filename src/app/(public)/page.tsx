@@ -17,7 +17,7 @@ export default async function Home() {
   // Top 4 Staff Members
   const staffMembers = await prisma.user.findMany({
     where: { role: "STAFF" },
-    select: { id: true, name: true, phone: true, image: true },
+    select: { id: true, name: true, phone: true, image: true, designation: true },
     orderBy: { createdAt: "desc" },
     take: 4,
   });
@@ -392,7 +392,9 @@ export default async function Home() {
 
                   {/* Name & Title */}
                   <h3 className="text-lg font-bold text-primary-900 leading-tight">{staff.name}</h3>
-                  <p className="text-xs font-semibold text-accent-500 uppercase tracking-widest mt-1 mb-4">Property Consultant</p>
+                  <p className="text-xs font-semibold text-accent-500 uppercase tracking-widest mt-1 mb-4">
+                    {staff.designation || "Property Consultant"}
+                  </p>
 
                   {/* Divider */}
                   <div className="w-8 h-0.5 bg-primary-200 rounded-full mb-4 group-hover:bg-accent-400 group-hover:w-12 transition-all duration-300" />

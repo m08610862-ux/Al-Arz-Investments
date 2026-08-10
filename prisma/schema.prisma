@@ -123,6 +123,7 @@ model User {
   image         String?
   password      String    // bcrypt hashed
   phone         String?
+  designation   String?
   role          Role      @default(STAFF)
   isActive      Boolean   @default(true)
 

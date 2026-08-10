@@ -16,6 +16,7 @@ export default async function AdminStaffPage() {
       email: true,
       phone: true,
       isActive: true,
+      designation: true,
       createdAt: true,
     },
   });

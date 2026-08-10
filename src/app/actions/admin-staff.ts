@@ -12,6 +12,7 @@ export async function createStaff(data: FormData) {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const phone = data.get("phone") as string;
+    const designation = data.get("designation") as string;
     const password = data.get("password") as string;
 
     if (!name || !email || !password) {
@@ -31,6 +32,7 @@ export async function createStaff(data: FormData) {
         name,
         email,
         phone,
+        designation,
         password: hashedPassword,
         role: "STAFF",
         isActive: true,
@@ -52,6 +54,7 @@ export async function updateStaff(data: FormData) {
     const id = data.get("id") as string;
     const name = data.get("name") as string;
     const phone = data.get("phone") as string;
+    const designation = data.get("designation") as string;
 
     if (!id || !name) {
       return { success: false, error: "Name is required." };
@@ -62,6 +65,7 @@ export async function updateStaff(data: FormData) {
       data: {
         name,
         phone,
+        designation,
       },
     });
 
