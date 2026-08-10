@@ -11,6 +11,8 @@ import { HeroSlider } from "@/components/home/hero-slider";
 import { LatestProperties } from "@/components/home/latest-properties";
 import { TestimonialsSlider } from "@/components/home/testimonials-slider";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   // 1. Fetch Dynamic Data
 

@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Learn more about Al-Arz Investments, our story, and our dedicated team.",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AboutPage() {
   const citiesCount = 2; // Hardcoded to 2 as per requirement
 
