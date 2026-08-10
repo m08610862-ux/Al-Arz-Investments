@@ -97,7 +97,7 @@ export default async function AboutPage() {
                 <Star className="h-8 w-8" />
               </div>
               <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={8} suffix="+" />
+                <AnimatedCounter end={6} suffix="+" />
               </p>
               <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Years in Business</p>
             </div>
