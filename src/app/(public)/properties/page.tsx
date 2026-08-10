@@ -134,7 +134,7 @@ export default async function PropertiesPage({
     <main className="min-h-screen bg-neutral-50">
       
       {/* Hero Section */}
-      <section className="relative py-28 sm:py-36 overflow-hidden">
+      <section className="relative py-14 sm:py-20 overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=70"
           alt="Premium Real Estate Listings"
@@ -143,23 +143,17 @@ export default async function PropertiesPage({
           sizes="100vw"
           priority
         />
-        {/* Multi-layer gradient for depth */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-950/90 via-primary-900/75 to-primary-800/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-transparent to-transparent" />
-        
-        {/* Decorative glowing orb */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-950/90 via-primary-900/80 to-primary-800/70" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/20 border border-white/50 backdrop-blur-sm px-5 py-2.5 text-sm font-bold text-white uppercase tracking-widest mb-6 shadow-lg">
-            <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/20 border border-white/50 backdrop-blur-sm px-4 py-2 text-xs font-bold text-white uppercase tracking-widest mb-4 shadow-lg">
+            <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
             {totalCount} Active Listings
           </div>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight mb-6 leading-[0.95]">
-            Find Your<br />
-            <span className="text-accent-400">Dream Property</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-3 leading-tight">
+            Find Your <span className="text-accent-400">Dream Property</span>
           </h1>
-          <p className="text-lg sm:text-xl text-white max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-base text-white/80 max-w-xl mx-auto font-medium">
             Browse our handpicked portfolio of premium houses, apartments, and commercial spaces across Pakistan.
           </p>
         </div>
