@@ -68,7 +68,7 @@ export function Sidebar({ role, user, children }: SidebarProps) {
           </div>
         </Link>
         <div className="flex flex-col overflow-hidden text-center">
-          <span className="font-bold text-[10px] text-accent-400 uppercase tracking-widest leading-none">
+          <span className="font-bold text-[10px] text-white uppercase tracking-widest leading-none">
             {panelTitle}
           </span>
         </div>
