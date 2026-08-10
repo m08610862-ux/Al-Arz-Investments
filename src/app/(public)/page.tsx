@@ -18,7 +18,7 @@ export default async function Home() {
   const staffMembers = await prisma.user.findMany({
     where: { role: "STAFF" },
     select: { id: true, name: true, phone: true, image: true },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
     take: 4,
   });
 

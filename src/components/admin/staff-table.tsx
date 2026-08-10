@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { MoreVertical, Edit2, Ban, CheckCircle2, UserPlus } from "lucide-react";
+import { MoreVertical, Edit2, Ban, CheckCircle2, UserPlus, Trash2 } from "lucide-react";
 import { StaffModal } from "./staff-modal";
-import { toggleStaffStatus } from "@/app/actions/admin-staff";
+import { toggleStaffStatus, deleteStaff } from "@/app/actions/admin-staff";
 
 type StaffMember = {
   id: string;
@@ -31,6 +31,12 @@ export function StaffTable({ staffList }: { staffList: StaffMember[] }) {
   const handleToggleStatus = async (id: string, currentStatus: boolean) => {
     if (confirm(`Are you sure you want to ${currentStatus ? "deactivate" : "activate"} this account?`)) {
       await toggleStaffStatus(id, !currentStatus);
+    }
+  };
+
+  const handleDelete = async (id: string, name: string) => {
+    if (confirm(`Are you absolutely sure you want to delete ${name}?\n\nTheir assigned properties and clients will be re-assigned to you.`)) {
+      await deleteStaff(id);
     }
   };
 
@@ -84,11 +90,17 @@ export function StaffTable({ staffList }: { staffList: StaffMember[] }) {
                     <button
                       onClick={() => handleToggleStatus(staff.id, staff.isActive)}
                       className={`inline-flex items-center gap-1 font-medium ${
-                        staff.isActive ? "text-red-600 hover:text-red-700" : "text-green-600 hover:text-green-700"
+                        staff.isActive ? "text-amber-600 hover:text-amber-700" : "text-green-600 hover:text-green-700"
                       }`}
                     >
                       {staff.isActive ? <Ban className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
                       {staff.isActive ? "Deactivate" : "Activate"}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(staff.id, staff.name)}
+                      className="inline-flex items-center gap-1 font-medium text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" /> Delete
                     </button>
                   </td>
                 </tr>
