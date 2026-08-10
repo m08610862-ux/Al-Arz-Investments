@@ -24,6 +24,7 @@ enum Role {
 enum PropertyListingType {
   SALE
   RENT
+  INVESTMENT
 }
 
 enum PropertyCategory {

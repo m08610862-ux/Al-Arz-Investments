@@ -110,7 +110,7 @@ export function PropertyFilters() {
           
           {/* Sale / Rent Toggle */}
           <div className="flex rounded-full bg-white/60 backdrop-blur-md p-1 shadow-sm border border-white/40 shrink-0">
-            {[{ v: "", l: "All" }, { v: "SALE", l: "Sale" }, { v: "RENT", l: "Rent" }].map(({ v, l }) => (
+            {[{ v: "", l: "All" }, { v: "SALE", l: "Sale" }, { v: "RENT", l: "Rent" }, { v: "INVESTMENT", l: "Investment" }].map(({ v, l }) => (
               <button key={v} type="button" onClick={() => { setType(v); applyFilters(undefined, { key: "type", value: v }); }}
                 className={`px-3.5 py-1.5 text-[11px] font-bold rounded-full transition-all ${
                   type === v ? "bg-primary-900 text-white shadow-sm" : "text-primary-700 hover:text-primary-900 hover:bg-white/50"

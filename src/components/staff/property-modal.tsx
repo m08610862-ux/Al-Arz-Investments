@@ -139,6 +139,7 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
               <select name="type" required defaultValue={property?.type ?? "SALE"} className="input">
                 <option value="SALE">For Sale</option>
                 <option value="RENT">For Rent</option>
+                <option value="INVESTMENT">Investment</option>
               </select>
             </div>
 
