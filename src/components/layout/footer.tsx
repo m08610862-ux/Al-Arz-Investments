@@ -15,12 +15,7 @@ const footerLinks = {
     { name: "Commercial", href: "/properties?type=commercial" },
     { name: "New Projects", href: "/properties?type=new" },
   ],
-  resources: [
-    { name: "Blog", href: "/blog" },
-    { name: "Market Insights", href: "/insights" },
-    { name: "FAQs", href: "/faqs" },
-    { name: "Privacy Policy", href: "/privacy" },
-  ],
+
 };
 
 export function Footer({ siteSettings }: { siteSettings: any }) {
@@ -30,7 +25,7 @@ export function Footer({ siteSettings }: { siteSettings: any }) {
     <footer className="bg-neutral-900 text-neutral-300">
       {/* Main Footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr]">
           {/* Brand Column */}
           <div className="space-y-5">
             <Link href="/" className="inline-block group">
@@ -141,48 +136,15 @@ export function Footer({ siteSettings }: { siteSettings: any }) {
             </ul>
           </div>
 
-          {/* Resources Links */}
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Resources
-            </h3>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-neutral-400 hover:text-primary-400 transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-neutral-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between py-6 gap-4">
+          <div className="py-6 text-center">
             <p className="text-xs text-neutral-500">
               &copy; {currentYear} Al-Arz Investments. All rights reserved.
             </p>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/privacy"
-                className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors"
-              >
-                Terms of Service
-              </Link>
-            </div>
           </div>
         </div>
       </div>
