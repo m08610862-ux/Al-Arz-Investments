@@ -40,6 +40,9 @@ export async function createStaff(data: FormData) {
     });
 
     revalidatePath("/admin/staff");
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
     return { success: true };
   } catch (error: any) {
     console.error(error);
@@ -70,6 +73,9 @@ export async function updateStaff(data: FormData) {
     });
 
     revalidatePath("/admin/staff");
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
     return { success: true };
   } catch (error: any) {
     console.error(error);
@@ -87,6 +93,8 @@ export async function toggleStaffStatus(id: string, isActive: boolean) {
     });
 
     revalidatePath("/admin/staff");
+    revalidatePath("/");
+    revalidatePath("/about");
     return { success: true };
   } catch (error: any) {
     console.error(error);
@@ -129,6 +137,9 @@ export async function deleteStaff(id: string) {
     revalidatePath("/admin/staff");
     revalidatePath("/admin/properties");
     revalidatePath("/admin/clients");
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
     return { success: true };
   } catch (error: any) {
     console.error(error);
