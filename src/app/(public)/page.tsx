@@ -66,54 +66,6 @@ export default async function Home() {
         <PropertyFilters />
       </HeroSlider>
 
-      {/* 2. STATS BAR */}
-      <section className="bg-white py-20 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-32 bg-accent-50 rounded-bl-full opacity-30 -z-0" />
-        <div className="absolute bottom-0 left-0 p-24 bg-primary-50 rounded-tr-full opacity-50 -z-0" />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8">
-            <div className="flex flex-col items-center justify-center text-center group">
-              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                <Star className="h-8 w-8" />
-              </div>
-              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={6} suffix="+" />
-              </p>
-              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Years in Business</p>
-            </div>
-
-            <div className="flex flex-col items-center justify-center text-center group">
-              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                <HomeIcon className="h-8 w-8" />
-              </div>
-              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={500} suffix="+" />
-              </p>
-              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Properties Sold</p>
-            </div>
-
-            <div className="flex flex-col items-center justify-center text-center group">
-              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                <Smile className="h-8 w-8" />
-              </div>
-              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={1200} suffix="+" />
-              </p>
-              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Happy Clients</p>
-            </div>
-
-            <div className="flex flex-col items-center justify-center text-center group">
-              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                <MapPin className="h-8 w-8" />
-              </div>
-              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={2} />
-              </p>
-              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Cities Covered</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 3. LATEST PROPERTIES (Server Component) */}
       <LatestProperties />
@@ -340,55 +292,54 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* TRUST BAR */}
-      <section className="bg-white py-24 relative overflow-hidden border-b border-primary-100">
-            <div className="absolute top-0 right-0 p-32 bg-accent-50 rounded-bl-full opacity-30 -z-0"></div>
-            <div className="absolute bottom-0 left-0 p-24 bg-primary-50 rounded-tr-full opacity-50 -z-0"></div>
-            
-            <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8">
-                <div className="flex flex-col items-center justify-center text-center group">
-                  <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                    <Building2 className="h-8 w-8" />
-                  </div>
-                  <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                    <AnimatedCounter end={500} suffix="+" />
-                  </p>
-                  <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Properties Sold</p>
-                </div>
-                
-                <div className="flex flex-col items-center justify-center text-center group">
-                  <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                    <Briefcase className="h-8 w-8" />
-                  </div>
-                  <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                    <AnimatedCounter end={10} suffix="+" />
-                  </p>
-                  <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Years Experience</p>
-                </div>
-                
-                <div className="flex flex-col items-center justify-center text-center group">
-                  <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                    <Users className="h-8 w-8" />
-                  </div>
-                  <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                    <AnimatedCounter end={10000} suffix="+" />
-                  </p>
-                  <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Happy Clients</p>
-                </div>
-                
-                <div className="flex flex-col items-center justify-center text-center group">
-                  <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                    <Shield className="h-8 w-8" />
-                  </div>
-                  <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                    <AnimatedCounter end={100} suffix="%" />
-                  </p>
-                  <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Secure</p>
-                </div>
+      {/* 5. ACHIEVEMENTS */}
+      <section className="bg-white py-20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-32 bg-accent-50 rounded-bl-full opacity-30 -z-0" />
+        <div className="absolute bottom-0 left-0 p-24 bg-primary-50 rounded-tr-full opacity-50 -z-0" />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8">
+            <div className="flex flex-col items-center justify-center text-center group">
+              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
+                <Star className="h-8 w-8" />
               </div>
+              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
+                <AnimatedCounter end={6} suffix="+" />
+              </p>
+              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Years in Business</p>
             </div>
-          </section>
+
+            <div className="flex flex-col items-center justify-center text-center group">
+              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
+                <HomeIcon className="h-8 w-8" />
+              </div>
+              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
+                <AnimatedCounter end={500} suffix="+" />
+              </p>
+              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Properties Sold</p>
+            </div>
+
+            <div className="flex flex-col items-center justify-center text-center group">
+              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
+                <Smile className="h-8 w-8" />
+              </div>
+              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
+                <AnimatedCounter end={1200} suffix="+" />
+              </p>
+              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Happy Clients</p>
+            </div>
+
+            <div className="flex flex-col items-center justify-center text-center group">
+              <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
+                <MapPin className="h-8 w-8" />
+              </div>
+              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
+                <AnimatedCounter end={2} />
+              </p>
+              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Cities Covered</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* 6. MEET OUR AGENTS STRIP */}
       {staffMembers.length > 0 && (
