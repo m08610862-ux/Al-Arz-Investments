@@ -16,7 +16,7 @@ export default async function AboutPage() {
 
   // Fetch all active staff
   const staffMembers = await prisma.user.findMany({
-    where: { role: "STAFF" },
+    where: { role: "STAFF", isActive: true },
     select: { id: true, name: true, phone: true, image: true, designation: true },
     orderBy: { createdAt: "asc" },
   });
