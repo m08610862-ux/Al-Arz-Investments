@@ -58,7 +58,8 @@ export function PropertyFilters() {
       if (state.maxPrice) params.set("maxPrice", state.maxPrice); else params.delete("maxPrice");
       if (state.bedrooms) params.set("bedrooms", state.bedrooms); else params.delete("bedrooms");
 
-      router.push(`${pathname}?${params.toString()}`);
+      const targetPath = pathname === "/properties" ? pathname : "/properties";
+      router.push(`${targetPath}?${params.toString()}`);
     },
     [query, city, society, phase, type, category, minPrice, maxPrice, bedrooms, pathname, router, searchParams]
   );
@@ -66,7 +67,8 @@ export function PropertyFilters() {
   const clearFilters = () => {
     setQuery(""); setCity(""); setSociety(""); setPhase(""); setType("");
     setCategory(""); setMinPrice(""); setMaxPrice(""); setBedrooms("");
-    router.push(pathname);
+    const targetPath = pathname === "/properties" ? pathname : "/properties";
+    router.push(targetPath);
   };
 
   return (
