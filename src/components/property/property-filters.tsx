@@ -151,7 +151,9 @@ export function PropertyFilters() {
                 { value: "APARTMENT", label: "Apartment" },
                 { value: "VILLA", label: "Villa" },
                 { value: "PLOT", label: "Plot" },
-                { value: "COMMERCIAL", label: "Commercial" }
+                { value: "COMMERCIAL", label: "Commercial" },
+                { value: "SHOP", label: "Shop" },
+                { value: "FARMHOUSE", label: "Farm House" }
               ]
             },
             {

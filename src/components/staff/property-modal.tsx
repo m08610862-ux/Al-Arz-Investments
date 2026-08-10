@@ -150,9 +150,10 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
                 <option value="APARTMENT">Apartment</option>
                 <option value="PLOT">Plot</option>
                 <option value="COMMERCIAL">Commercial</option>
+                <option value="SHOP">Shop</option>
+                <option value="FARMHOUSE">Farmhouse</option>
                 <option value="VILLA">Villa</option>
                 <option value="BUILDING">Building</option>
-                <option value="FARMHOUSE">Farmhouse</option>
               </select>
             </div>
 

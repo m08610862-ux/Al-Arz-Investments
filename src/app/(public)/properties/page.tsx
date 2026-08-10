@@ -19,7 +19,7 @@ const searchParamsSchema = z.object({
   query: z.string().optional().catch(undefined),
   city: z.string().catch(""),
   type: z.enum(["SALE", "RENT", "INVESTMENT"]).optional().catch(undefined),
-  category: z.enum(["HOUSE", "APARTMENT", "PLOT", "COMMERCIAL", "FARMHOUSE", "VILLA", "BUILDING"]).optional().catch(undefined),
+  category: z.enum(["HOUSE", "APARTMENT", "PLOT", "COMMERCIAL", "FARMHOUSE", "VILLA", "BUILDING", "SHOP"]).optional().catch(undefined),
   society: z.string().optional().catch(undefined),
   phase: z.string().optional().catch(undefined),
   bedrooms: z.coerce.number().int().nonnegative().optional().catch(undefined),
