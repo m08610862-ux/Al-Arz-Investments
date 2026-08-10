@@ -3,7 +3,7 @@ import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { 
   Building2, ArrowRight, Shield, Users, TrendingUp, 
-  Star, HeartHandshake, MessageCircle, Briefcase, MapPin, Key, UserCheck, Home, Smile
+  Star, HeartHandshake, MessageCircle, Briefcase, MapPin, Key, UserCheck, Home as HomeIcon, Smile
 } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { PropertyFilters } from "@/components/property/property-filters";
@@ -84,7 +84,7 @@ export default async function Home() {
 
             <div className="flex flex-col items-center justify-center text-center group">
               <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                <Home className="h-8 w-8" />
+                <HomeIcon className="h-8 w-8" />
               </div>
               <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
                 <AnimatedCounter end={500} suffix="+" />
