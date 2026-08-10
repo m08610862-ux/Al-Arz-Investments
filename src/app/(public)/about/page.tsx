@@ -75,8 +75,8 @@ export default async function AboutPage() {
             </div>
             <div className="relative h-64 sm:h-96 lg:h-auto hidden sm:block">
               <Image
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Business Deal Handshake"
+                src="https://images.unsplash.com/photo-1599930113854-d6d7fd521f10?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Islamabad Pakistan Cityscape"
                 fill
                 className="object-cover"
               />
