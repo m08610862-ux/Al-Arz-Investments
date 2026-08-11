@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { PropertyCard } from "@/components/property/property-card";
 import { PropertyFilters } from "@/components/property/property-filters";
+import { PropertyGridClient } from "@/components/property/property-grid-client";
 import Link from "next/link";
 import Image from "next/image";
 import { Building2, ChevronLeft, ChevronRight, Search } from "lucide-react";
@@ -209,11 +210,7 @@ export default async function PropertiesPage({
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7">
-            {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+          <PropertyGridClient properties={properties as any} />
         )}
 
         {/* Pagination */}

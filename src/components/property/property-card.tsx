@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BedDouble, Bath, Square, MapPin, Flame, Rocket } from "lucide-react";
+import { BedDouble, Bath, Square, MapPin, Flame, Rocket, CheckCircle2, Circle } from "lucide-react";
 
 import { getWatermarkedUrl } from "@/lib/cloudinary";
 
@@ -22,9 +22,11 @@ interface PropertyCardProps {
     status: string;
     label: string;
   };
+  isSelected?: boolean;
+  onToggleSelect?: (e: React.MouseEvent) => void;
 }
 
-export function PropertyCard({ property }: PropertyCardProps) {
+export function PropertyCard({ property, isSelected, onToggleSelect }: PropertyCardProps) {
   // Format price to PKR
   const formattedPrice = new Intl.NumberFormat("en-PK", {
     style: "currency",
@@ -41,7 +43,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Link 
       href={`/properties/${property.id}`}
-      className="group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-lg shadow-primary-900/5 hover:shadow-xl hover:shadow-primary-900/15 transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-primary-100"
+      className={`group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-lg transition-all duration-500 hover:-translate-y-2 border ${isSelected ? 'border-green-500 shadow-green-500/20 shadow-xl' : 'border-transparent hover:border-primary-100 shadow-primary-900/5 hover:shadow-xl hover:shadow-primary-900/15'}`}
     >
       {/* Image Container */}
       <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
@@ -75,8 +77,20 @@ export function PropertyCard({ property }: PropertyCardProps) {
             </span>
           )}
         </div>
-        
-        {/* Hover Gradient Overlay for Text Visibility if we wanted it on the image, but text is below */}
+        {/* Selection Checkbox (if enabled) */}
+        {onToggleSelect && (
+          <button
+            onClick={onToggleSelect}
+            className="absolute top-4 right-4 z-10 p-1 bg-white/80 backdrop-blur-md rounded-full shadow-md hover:scale-110 transition-transform"
+            title={isSelected ? "Deselect property" : "Select property"}
+          >
+            {isSelected ? (
+              <CheckCircle2 className="h-6 w-6 text-green-600" />
+            ) : (
+              <Circle className="h-6 w-6 text-neutral-400 hover:text-green-500" />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Content */}
