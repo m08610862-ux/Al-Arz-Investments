@@ -17,7 +17,7 @@ interface WhatsAppLeadModalProps {
 }
 
 // Fallback business number if staff member has no phone configured
-const FALLBACK_BUSINESS_NUMBER = "923000000000";
+const FALLBACK_BUSINESS_NUMBER = "923300276999";
 
 export function WhatsAppLeadModal({
   propertyId,
