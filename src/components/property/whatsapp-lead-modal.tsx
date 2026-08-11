@@ -43,11 +43,7 @@ export function WhatsAppLeadModal({
     },
   });
 
-  const cleanPhoneNumber = (phone: string | null) => {
-    if (!phone) return FALLBACK_BUSINESS_NUMBER;
-    // Strip everything except digits (wa.me format requires just country code + number)
-    return phone.replace(/\D/g, "");
-  };
+
 
   const onSubmit = async (data: LeadFormValues) => {
     setIsSubmitting(true);
@@ -66,7 +62,8 @@ export function WhatsAppLeadModal({
       setIsSuccess(true);
 
       // 2. Build WhatsApp Deep Link
-      const targetPhone = cleanPhoneNumber(staffPhone);
+      // User requested to always use the default number, regardless of staff's phone
+      const targetPhone = FALLBACK_BUSINESS_NUMBER;
       
       // We encode the message so it's safe for a URL
       const propertyUrl = window.location.href;
