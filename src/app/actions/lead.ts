@@ -62,7 +62,7 @@ export async function submitContactLead(
     await prisma.client.create({
       data: {
         name: validatedData.name,
-        phone: validatedData.phone,
+        phone: validatedData.phone || "Not Provided",
         email: validatedData.email || null,
         message: validatedData.message,
         assignedStaffId: staffId || null,
