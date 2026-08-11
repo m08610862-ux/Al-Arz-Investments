@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { getWatermarkedUrl } from "@/lib/cloudinary";
 import { BedDouble, Bath, Square, MapPin, Tag, Calendar, User } from "lucide-react";
@@ -69,37 +70,40 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
   return (
     <main className="min-h-screen pb-20">
-      {/* Hero Image Carousel Section */}
-      <section className="relative w-full bg-neutral-900">
-        <ImageCarousel images={property.images} alt={property.title} hero />
-
-        {/* Text overlay pinned to bottom of carousel */}
-        <div className="absolute bottom-0 left-0 w-full z-10 pointer-events-none">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="inline-flex items-center rounded-full bg-primary-600 px-3 py-1 text-xs font-bold text-white shadow-sm uppercase tracking-wider">
-                For {property.type}
+      {/* Compact Hero Banner */}
+      <section className="relative h-[220px] sm:h-[260px] w-full bg-primary-950 overflow-hidden">
+        {property.images.length > 0 && (
+          <Image
+            src={getWatermarkedUrl(property.images[0])}
+            alt={property.title}
+            fill
+            className="object-cover opacity-30"
+            priority
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-primary-950/60 to-primary-900/40" />
+        <div className="relative z-10 h-full flex flex-col justify-end mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="inline-flex items-center rounded-full bg-primary-600 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
+              For {property.type}
+            </span>
+            <span className="inline-flex items-center rounded-full bg-white/15 backdrop-blur-sm border border-white/20 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wider">
+              {property.category}
+            </span>
+            {property.status !== "AVAILABLE" && (
+              <span className="inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
+                {property.status}
               </span>
-              <span className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1 text-xs font-semibold text-white shadow-sm uppercase tracking-wider">
-                {property.category}
-              </span>
-              {property.status !== "AVAILABLE" && (
-                <span className="inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white shadow-sm uppercase tracking-wider">
-                  {property.status}
-                </span>
-              )}
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-md">
-              {property.title}
-            </h1>
-
-            <div className="mt-4 flex items-center gap-2 text-primary-100">
-              <MapPin className="h-5 w-5 shrink-0" />
-              <p className="text-lg">
-                {[property.address, property.phase, property.society, property.city].filter(Boolean).join(", ")}
-              </p>
-            </div>
+            )}
+          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-md line-clamp-2">
+            {property.title}
+          </h1>
+          <div className="mt-2 flex items-center gap-1.5 text-primary-200">
+            <MapPin className="h-4 w-4 shrink-0" />
+            <p className="text-sm">
+              {[property.address, property.phase, property.society, property.city].filter(Boolean).join(", ")}
+            </p>
           </div>
         </div>
       </section>
@@ -109,8 +113,15 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
         <div className="flex flex-col lg:flex-row gap-8">
           
           {/* Main Details (Left Column) */}
-          <div className="flex-1 space-y-8">
-            
+          <div className="flex-1 space-y-6">
+
+            {/* Image Carousel */}
+            {property.images.length > 0 && (
+              <div className="overflow-hidden rounded-2xl shadow-sm border border-neutral-200">
+                <ImageCarousel images={property.images} alt={property.title} />
+              </div>
+            )}
+
             {/* Price & Quick Specs Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 sm:p-8">
               <div className="text-3xl sm:text-4xl font-bold text-primary-700 mb-8">
