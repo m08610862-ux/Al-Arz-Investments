@@ -46,10 +46,10 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
     where: { id },
     include: {
       assignedTo: {
-        select: { name: true, phone: true, email: true },
+        select: { name: true, phone: true, email: true, image: true },
       },
       createdBy: {
-        select: { name: true, phone: true, email: true },
+        select: { name: true, phone: true, email: true, image: true },
       },
     },
   });
@@ -199,8 +199,17 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 <h3 className="text-lg font-bold text-neutral-900 mb-6">Contact Agent</h3>
                 
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="h-14 w-14 rounded-full bg-primary-100 flex items-center justify-center shrink-0 border-2 border-white shadow-sm">
-                    <User className="h-6 w-6 text-primary-600" />
+                  <div className="h-14 w-14 rounded-full bg-primary-100 flex items-center justify-center shrink-0 border-2 border-white shadow-sm overflow-hidden relative">
+                    {staff.image ? (
+                      <Image 
+                        src={staff.image} 
+                        alt={staff.name || "Agent"} 
+                        fill 
+                        className="object-cover"
+                      />
+                    ) : (
+                      <User className="h-6 w-6 text-primary-600" />
+                    )}
                   </div>
                   <div>
                     <p className="font-semibold text-neutral-900 text-lg">
