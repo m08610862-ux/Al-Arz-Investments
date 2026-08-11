@@ -335,7 +335,7 @@ export default async function Home() {
               <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
                 <AnimatedCounter end={2} />
               </p>
-              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Cities Covered</p>
+              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Trusted 100%</p>
             </div>
           </div>
         </div>
