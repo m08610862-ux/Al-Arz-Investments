@@ -10,23 +10,11 @@ import { submitContactLead } from "@/app/actions/lead";
 
 type ContactFormValues = z.infer<typeof leadSchema>;
 
-interface StaffMember {
-  id: string;
-  name: string | null;
-  phone: string | null;
-}
 
-interface ContactFormProps {
-  staffList: StaffMember[];
-}
-
-const FALLBACK_BUSINESS_NUMBER = "923000000000";
-
-export function ContactForm({ staffList }: ContactFormProps) {
+export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [selectedStaffId, setSelectedStaffId] = useState<string>("");
 
   const {
     register,
@@ -43,17 +31,12 @@ export function ContactForm({ staffList }: ContactFormProps) {
     },
   });
 
-  const cleanPhoneNumber = (phone: string | null) => {
-    if (!phone) return FALLBACK_BUSINESS_NUMBER;
-    return phone.replace(/\D/g, "");
-  };
-
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     setErrorMsg("");
 
     try {
-      const result = await submitContactLead(data, selectedStaffId || undefined);
+      const result = await submitContactLead(data);
 
       if (!result.success) {
         setErrorMsg(result.error || "Failed to submit message.");
@@ -63,19 +46,14 @@ export function ContactForm({ staffList }: ContactFormProps) {
 
       setIsSuccess(true);
 
-      // Find staff phone if selected
-      const selectedStaff = staffList.find((s) => s.id === selectedStaffId);
-      const targetPhone = cleanPhoneNumber(selectedStaff?.phone || null);
-      
       const waMessage = `*New Inquiry*\n\n*Name:* ${data.name}\n\n*Message:* ${data.message}\n\n_Sent via Al-Arz Investments Contact Page_`;
-      const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(waMessage)}`;
+      const waUrl = `https://wa.me/923300276999?text=${encodeURIComponent(waMessage)}`;
 
       window.open(waUrl, "_blank", "noopener,noreferrer");
 
       setTimeout(() => {
         setIsSuccess(false);
         reset();
-        setSelectedStaffId("");
       }, 5000);
 
     } catch (err) {
@@ -155,23 +133,6 @@ export function ContactForm({ staffList }: ContactFormProps) {
             {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
           </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-neutral-700">
-              Select an Agent <span className="text-neutral-400 font-normal">(Optional)</span>
-            </label>
-            <select
-              value={selectedStaffId}
-              onChange={(e) => setSelectedStaffId(e.target.value)}
-              className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 transition-all"
-            >
-              <option value="">Any Available Agent</option>
-              {staffList.map((staff) => (
-                <option key={staff.id} value={staff.id}>
-                  {staff.name}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
 
         <div className="space-y-1.5">

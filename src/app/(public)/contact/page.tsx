@@ -103,7 +103,7 @@ export default async function ContactPage() {
                 </p>
               </div>
               
-              <ContactForm staffList={staff} />
+              <ContactForm />
             </div>
           </div>
 
