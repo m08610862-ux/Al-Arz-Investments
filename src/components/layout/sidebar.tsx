@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Building2,
   Users,
-  Package,
   UserSquare2,
   Settings,
   UserCircle,
@@ -33,7 +32,6 @@ export function Sidebar({ role, user, children }: SidebarProps) {
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
     { href: "/admin/properties", label: "Properties", icon: Building2 },
     { href: "/admin/clients", label: "Clients & Leads", icon: Users },
-    { href: "/admin/inventory", label: "Inventory", icon: Package },
     { href: "/admin/staff", label: "Staff Management", icon: UserSquare2 },
     { href: "/admin/settings", label: "Site Settings", icon: Settings },
   ];
@@ -42,7 +40,6 @@ export function Sidebar({ role, user, children }: SidebarProps) {
     { href: "/staff", label: "My Dashboard", icon: LayoutDashboard, exact: true },
     { href: "/staff/properties", label: "My Properties", icon: Building2 },
     { href: "/staff/clients", label: "My Clients", icon: Users },
-    { href: "/staff/inventory", label: "My Inventory", icon: Package },
     { href: "/staff/profile", label: "My Profile", icon: UserCircle },
   ];
 

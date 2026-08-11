@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
-import { Building2, Users, CheckCircle, Clock, AlertTriangle } from "lucide-react";
+import { Building2, Users, CheckCircle, Clock } from "lucide-react";
 import Link from "next/link";
 
 export default async function StaffDashboard() {
@@ -14,7 +14,6 @@ export default async function StaffDashboard() {
     myPropertiesByStatus,
     myLeadsByStatus,
     recentLeads,
-    myInventory,
   ] = await Promise.all([
     prisma.property.count({
       where: { OR: [{ createdById: staffId }, { assignedToId: staffId }] },
@@ -45,24 +44,8 @@ export default async function StaffDashboard() {
         property: { select: { title: true } },
       },
     }),
-    prisma.inventoryItem.findMany({
-      where: {
-        property: { OR: [{ createdById: staffId }, { assignedToId: staffId }] },
-      },
-      select: { status: true, propertyId: true, property: { select: { title: true, id: true } } },
-    }),
   ]);
 
-  // Compute low-stock alerts for this staff's properties
-  const byProp: Record<string, { title: string; id: string; total: number; available: number }> = {};
-  for (const item of myInventory) {
-    if (!byProp[item.propertyId]) {
-      byProp[item.propertyId] = { title: item.property.title, id: item.property.id, total: 0, available: 0 };
-    }
-    byProp[item.propertyId].total++;
-    if (item.status === "AVAILABLE") byProp[item.propertyId].available++;
-  }
-  const lowStockAlerts = Object.values(byProp).filter((p) => p.total > 1 && p.available <= 1);
 
   const getPropCount = (status: string) =>
     myPropertiesByStatus.find((p) => p.status === status)?._count ?? 0;
@@ -79,24 +62,6 @@ export default async function StaffDashboard() {
         Welcome back, {session.user.name}! Here&apos;s your overview.
       </p>
 
-      {/* Low-Stock Alerts */}
-      {lowStockAlerts.length > 0 && (
-        <div className="mb-8 rounded-xl bg-red-50 border border-red-200 p-4">
-          <h3 className="text-red-800 font-bold flex items-center gap-2 mb-2">
-            <AlertTriangle className="h-5 w-5" />
-            Low Availability Alert
-          </h3>
-          <ul className="space-y-1 text-sm text-red-700">
-            {lowStockAlerts.map((alert) => (
-              <li key={alert.id} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0" />
-                <Link href={`/properties/${alert.id}`} className="font-semibold hover:underline">{alert.title}</Link>
-                — only <strong>{alert.available}</strong> of {alert.total} units available.
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       {/* Top Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">

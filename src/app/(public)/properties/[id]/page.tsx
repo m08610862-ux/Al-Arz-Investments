@@ -2,9 +2,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { getWatermarkedUrl } from "@/lib/cloudinary";
-import { BedDouble, Bath, Square, MapPin, Tag, Calendar, User, Grid3x3 } from "lucide-react";
+import { BedDouble, Bath, Square, MapPin, Tag, Calendar, User } from "lucide-react";
 import { WhatsAppLeadModal } from "@/components/property/whatsapp-lead-modal";
-import { UnitStatusGrid } from "@/components/inventory/unit-status-grid";
 
 import type { Metadata } from "next";
 
@@ -50,10 +49,6 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
       },
       createdBy: {
         select: { name: true, phone: true, email: true },
-      },
-      inventory: {
-        orderBy: [{ floor: "asc" }, { unitNumber: "asc" }],
-        select: { id: true, unitNumber: true, floor: true, area: true, price: true, status: true },
       },
     },
   });
@@ -190,17 +185,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
               </div>
             </div>
 
-            {/* Unit Availability Grid (only if property has inventory) */}
-            {property.inventory.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-2">
-                  <Grid3x3 className="h-6 w-6 text-primary-600" />
-                  Unit Availability
-                </h2>
-                <UnitStatusGrid units={property.inventory} />
-              </div>
-            )}
-            
+
           </div>
 
           {/* Sidebar (Right Column) */}

@@ -37,7 +37,7 @@ export function PropertyTable({
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this property? This will also delete any linked inventory units and leads cannot be linked to it anymore.")) {
+    if (confirm("Are you sure you want to delete this property?")) {
       setLoadingId(id);
       await deleteProperty(id);
       setLoadingId(null);
