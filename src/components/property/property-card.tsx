@@ -18,6 +18,7 @@ interface PropertyCardProps {
     bedrooms: number | null;
     bathrooms: number | null;
     area: number | null;
+    areaUnit: string;
     images: string[];
     status: string;
     label: string;
@@ -136,7 +137,7 @@ export function PropertyCard({ property, isSelected, onToggleSelect }: PropertyC
               <Square className="h-4 w-4" />
             </div>
             <span className="text-sm font-bold text-primary-900">
-              {property.area ? `${property.area} sqft` : "-"}
+              {property.area ? `${property.area} ${property.areaUnit?.toLowerCase() || 'marla'}` : "-"}
             </span>
           </div>
         </div>

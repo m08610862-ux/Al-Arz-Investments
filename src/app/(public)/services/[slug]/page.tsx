@@ -66,6 +66,7 @@ export default async function ServicePage({
       bedrooms: true,
       bathrooms: true,
       area: true,
+      areaUnit: true,
       images: true,
       status: true,
       label: true,

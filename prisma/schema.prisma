@@ -165,7 +165,8 @@ model Property {
   phase       String?             // e.g. Phase 1, Phase 2
   bedrooms    Int?
   bathrooms   Int?
-  area        Float?              // in sq ft or marla
+  area        Float?              // number value
+  areaUnit    String              @default("Marla") // "Marla", "Kanal", "Sqft"
   status      PropertyStatus      @default(AVAILABLE)
   images      String[]            // array of image URLs/paths
   featured    Boolean             @default(false)

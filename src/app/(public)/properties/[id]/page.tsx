@@ -157,7 +157,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                       <span className="text-sm font-medium uppercase tracking-wider">Area</span>
                     </div>
                     <span className="text-2xl font-bold text-neutral-900">
-                      {property.area} <span className="text-base font-normal text-neutral-500">sqft</span>
+                      {property.area} <span className="text-base font-normal text-neutral-500">{property.areaUnit?.toLowerCase() || 'marla'}</span>
                     </span>
                   </div>
                 )}

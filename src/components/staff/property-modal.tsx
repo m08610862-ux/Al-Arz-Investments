@@ -19,6 +19,7 @@ type PropertyData = {
   bedrooms: number | null;
   bathrooms: number | null;
   area: number | null;
+  areaUnit: string;
   isActive: boolean;
   label: string;
   images: string[];
@@ -195,8 +196,15 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
             </div>
 
             <div>
-              <label className="label">Area (sq ft)</label>
-              <input name="area" type="number" min="0" defaultValue={property?.area ?? ""} className="input" />
+              <label className="label">Area Size</label>
+              <div className="flex gap-2">
+                <input name="area" type="number" min="0" step="any" defaultValue={property?.area ?? ""} className="input" placeholder="Enter Unit" />
+                <select name="areaUnit" defaultValue={(property as any)?.areaUnit ?? "MARLA"} className="input w-28 shrink-0">
+                  <option value="MARLA">Marla</option>
+                  <option value="KANAL">Kanal</option>
+                  <option value="SQFT">Sqft</option>
+                </select>
+              </div>
             </div>
 
 

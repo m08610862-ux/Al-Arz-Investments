@@ -19,6 +19,7 @@ type Property = {
   bedrooms: number | null;
   bathrooms: number | null;
   area: number | null;
+  areaUnit: string;
   society: string | null;
   phase: string | null;
   isActive: boolean;

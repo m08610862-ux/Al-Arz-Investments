@@ -25,6 +25,7 @@ export default async function MyPropertiesPage() {
       bedrooms: true,
       bathrooms: true,
       area: true,
+      areaUnit: true,
       society: true,
       phase: true,
       isActive: true,

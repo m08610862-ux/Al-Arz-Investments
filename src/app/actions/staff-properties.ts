@@ -34,6 +34,7 @@ const propertySchema = z.object({
   bedrooms: intOrNull,
   bathrooms: intOrNull,
   area: numberOrNull,
+  areaUnit: z.enum(["MARLA", "KANAL", "SQFT", "Marla", "Kanal", "Sqft"]).default("MARLA"),
   society: z.string().nullable().optional(),
   phase: z.string().nullable().optional(),
   label: z.nativeEnum(PropertyLabel).default("NONE"),
