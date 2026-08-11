@@ -84,7 +84,7 @@ export function PropertyFilters() {
               placeholder="Search by city, society, or keyword..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full border-0 bg-transparent pl-14 pr-4 py-3.5 text-base font-medium text-primary-900 focus:ring-0 placeholder:text-neutral-400"
+              className="w-full border-0 bg-transparent pl-14 pr-4 py-3.5 text-base font-medium text-primary-900 outline-none focus:outline-none focus:ring-0 placeholder:text-neutral-400"
             />
             {query && (
               <button 
@@ -207,12 +207,12 @@ export function PropertyFilters() {
                   <div>
                     <label className="block text-[10px] font-bold text-neutral-400 mb-1.5 uppercase tracking-wider">Min</label>
                     <input type="number" placeholder="0" value={minPrice} onChange={(e) => setMinPrice(e.target.value)}
-                      className="w-full rounded-xl border-0 bg-neutral-50 px-3 py-2.5 text-sm font-medium text-primary-900 ring-1 ring-inset ring-neutral-200 focus:ring-2 focus:ring-inset focus:ring-primary-600 transition-all" />
+                      className="w-full rounded-xl border-0 bg-neutral-50 px-3 py-2.5 text-sm font-medium text-primary-900 outline-none focus:outline-none ring-1 ring-inset ring-neutral-200 focus:ring-2 focus:ring-inset focus:ring-primary-600 transition-all" />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-neutral-400 mb-1.5 uppercase tracking-wider">Max</label>
                     <input type="number" placeholder="Any" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)}
-                      className="w-full rounded-xl border-0 bg-neutral-50 px-3 py-2.5 text-sm font-medium text-primary-900 ring-1 ring-inset ring-neutral-200 focus:ring-2 focus:ring-inset focus:ring-primary-600 transition-all" />
+                      className="w-full rounded-xl border-0 bg-neutral-50 px-3 py-2.5 text-sm font-medium text-primary-900 outline-none focus:outline-none ring-1 ring-inset ring-neutral-200 focus:ring-2 focus:ring-inset focus:ring-primary-600 transition-all" />
                   </div>
                 </div>
                 <button type="button" onClick={() => { setShowPrice(false); applyFilters(); }}
