@@ -71,23 +71,23 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   return (
     <main className="min-h-screen pb-20">
       {/* Compact Hero Banner */}
-      <section className="relative h-[220px] sm:h-[260px] w-full bg-black overflow-hidden">
+      <section className="relative h-[220px] sm:h-[260px] w-full bg-neutral-100 overflow-hidden border-b border-neutral-200">
         {property.images.length > 0 && (
           <Image
             src={getWatermarkedUrl(property.images[0])}
             alt={property.title}
             fill
-            className="object-cover opacity-40"
+            className="object-cover opacity-15"
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent" />
         <div className="relative z-10 h-full flex flex-col justify-end mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="inline-flex items-center rounded-full bg-primary-600 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
               For {property.type}
             </span>
-            <span className="inline-flex items-center rounded-full bg-white/15 backdrop-blur-sm border border-white/20 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wider">
+            <span className="inline-flex items-center rounded-full bg-neutral-200/50 backdrop-blur-sm border border-neutral-300 px-3 py-1 text-xs font-semibold text-primary-900 uppercase tracking-wider">
               {property.category}
             </span>
             {property.status !== "AVAILABLE" && (
@@ -96,12 +96,12 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
               </span>
             )}
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-md line-clamp-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-900 tracking-tight line-clamp-2">
             {property.title}
           </h1>
-          <div className="mt-2 flex items-center gap-1.5 text-primary-200">
+          <div className="mt-2 flex items-center gap-1.5 text-primary-600">
             <MapPin className="h-4 w-4 shrink-0" />
-            <p className="text-sm">
+            <p className="text-sm font-medium">
               {[property.address, property.phase, property.society, property.city].filter(Boolean).join(", ")}
             </p>
           </div>
