@@ -32,7 +32,7 @@ export async function submitLead(
     await prisma.client.create({
       data: {
         name: validatedData.name,
-        phone: validatedData.phone,
+        phone: validatedData.phone || "Via WhatsApp",
         email: validatedData.email || null,
         message: validatedData.message,
         propertyId: propertyId,

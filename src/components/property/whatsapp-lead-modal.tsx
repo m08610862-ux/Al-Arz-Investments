@@ -38,7 +38,6 @@ export function WhatsAppLeadModal({
     resolver: zodResolver(leadSchema),
     defaultValues: {
       name: "",
-      phone: "",
       email: "",
       message: `Hi, I am interested in "${propertyTitle}". Can you provide more details?`,
     },
@@ -158,22 +157,6 @@ export function WhatsAppLeadModal({
                     {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-neutral-700 mb-1">
-                      Phone Number *
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-                      <input
-                        {...register("phone")}
-                        className={`w-full rounded-xl border bg-neutral-50 pl-9 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-green-500 transition-all ${
-                          errors.phone ? "border-red-300" : "border-neutral-200"
-                        }`}
-                        placeholder="03001234567"
-                      />
-                    </div>
-                    {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
-                  </div>
 
                   <div>
                     <label className="block text-sm font-medium text-neutral-700 mb-1">
