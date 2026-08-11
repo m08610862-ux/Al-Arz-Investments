@@ -118,7 +118,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             {/* Image Carousel */}
             {property.images.length > 0 && (
               <div className="overflow-hidden rounded-2xl shadow-sm border border-neutral-200">
-                <ImageCarousel images={property.images} alt={property.title} />
+                <ImageCarousel images={property.images} alt={property.title} showArrows />
               </div>
             )}
 

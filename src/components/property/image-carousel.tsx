@@ -12,9 +12,11 @@ interface ImageCarouselProps {
   alt: string;
   /** If true, renders a taller hero-style slider (for property detail page) */
   hero?: boolean;
+  /** If true, arrows are always visible (not just on hover) */
+  showArrows?: boolean;
 }
 
-export function ImageCarousel({ images, alt, hero = false }: ImageCarouselProps) {
+export function ImageCarousel({ images, alt, hero = false, showArrows = false }: ImageCarouselProps) {
   const [current, setCurrent] = useState(0);
   const list = images.length > 0 ? images : [FALLBACK];
 
@@ -65,17 +67,25 @@ export function ImageCarousel({ images, alt, hero = false }: ImageCarouselProps)
         <>
           <button
             onClick={prev}
-            className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-all ${hero ? "h-10 w-10" : "h-7 w-7 opacity-0 group-hover:opacity-100"}`}
+            className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-all ${
+              hero || showArrows
+                ? "h-10 w-10"
+                : "h-7 w-7 opacity-0 group-hover:opacity-100"
+            }`}
             aria-label="Previous image"
           >
-            <ChevronLeft className={hero ? "h-5 w-5" : "h-4 w-4"} />
+            <ChevronLeft className={hero || showArrows ? "h-5 w-5" : "h-4 w-4"} />
           </button>
           <button
             onClick={next}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-all ${hero ? "h-10 w-10" : "h-7 w-7 opacity-0 group-hover:opacity-100"}`}
+            className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-all ${
+              hero || showArrows
+                ? "h-10 w-10"
+                : "h-7 w-7 opacity-0 group-hover:opacity-100"
+            }`}
             aria-label="Next image"
           >
-            <ChevronRight className={hero ? "h-5 w-5" : "h-4 w-4"} />
+            <ChevronRight className={hero || showArrows ? "h-5 w-5" : "h-4 w-4"} />
           </button>
         </>
       )}
