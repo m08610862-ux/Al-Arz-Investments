@@ -41,7 +41,7 @@ export function ImageCarousel({ images, alt, hero = false }: ImageCarouselProps)
       {/* Images */}
       <div
         className="flex h-full transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)`, width: `${list.length * 100}%` }}
+        style={{ transform: `translateX(-${current * (100 / list.length)}%)`, width: `${list.length * 100}%` }}
       >
         {list.map((url, i) => (
           <div key={i} className="relative h-full shrink-0" style={{ width: `${100 / list.length}%` }}>
