@@ -71,17 +71,17 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   return (
     <main className="min-h-screen pb-20">
       {/* Compact Hero Banner */}
-      <section className="relative h-[220px] sm:h-[260px] w-full bg-primary-950 overflow-hidden">
+      <section className="relative h-[220px] sm:h-[260px] w-full bg-black overflow-hidden">
         {property.images.length > 0 && (
           <Image
             src={getWatermarkedUrl(property.images[0])}
             alt={property.title}
             fill
-            className="object-cover opacity-30"
+            className="object-cover opacity-40"
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-primary-950/60 to-primary-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40" />
         <div className="relative z-10 h-full flex flex-col justify-end mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="inline-flex items-center rounded-full bg-primary-600 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
