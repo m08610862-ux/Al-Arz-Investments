@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { Edit2, Trash2, Plus, Eye, EyeOff, Flame, Rocket, Search, X } from "lucide-react";
 import { PropertyModal } from "./property-modal";
 import { deleteProperty, togglePropertyActiveStatus } from "@/app/actions/staff-properties";
+import Link from "next/link";
 
 type Property = {
   id: string;
@@ -239,6 +240,7 @@ export function MyPropertiesTable({ properties }: { properties: Property[] }) {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right space-x-3 whitespace-nowrap">
+                    <Link href={`/properties/${property.id}`} className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium" target="_blank">View</Link>
                     <button onClick={() => handleEdit(property)} className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium">
                       <Edit2 className="h-3.5 w-3.5" /> Edit
                     </button>
