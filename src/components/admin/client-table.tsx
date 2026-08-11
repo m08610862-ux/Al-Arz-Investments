@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Trash2, Plus, X, MessageCircle, Save, ChevronDown } from "lucide-react";
-import { reassignLead, updateLeadStatus, deleteLead, adminCreateLead, adminUpdateLeadNotes } from "@/app/actions/admin-clients";
+import { Trash2, Plus, X, MessageCircle, Save, ChevronDown, Edit2 } from "lucide-react";
+import { reassignLead, updateLeadStatus, deleteLead, adminCreateLead, adminUpdateLead, adminUpdateLeadNotes } from "@/app/actions/admin-clients";
 import { ClientStatus, LeadSource } from "@prisma/client";
 
 type Staff = { id: string; name: string };
@@ -45,25 +45,28 @@ function buildWhatsAppUrl(phone: string, name: string, propertyTitle: string | n
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
 }
 
-function AddLeadModal({
+function LeadModal({
   onClose,
   staffList,
   properties,
+  lead,
 }: {
   onClose: () => void;
   staffList: Staff[];
   properties: Property[];
+  lead?: LeadList | null;
 }) {
+  const isEditing = !!lead;
   const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    message: "",
-    notes: "",
-    source: "PHONE" as LeadSource,
-    status: "NEW" as ClientStatus,
-    assignedStaffId: "",
-    propertyId: "",
+    name: lead?.name || "",
+    phone: lead?.phone || "",
+    email: lead?.email || "",
+    message: lead?.message || "",
+    notes: lead?.notes || "",
+    source: (lead?.source || "PHONE") as LeadSource,
+    status: (lead?.status || "NEW") as ClientStatus,
+    assignedStaffId: lead?.assignedStaff?.id || "",
+    propertyId: lead?.property?.id || "",
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -72,17 +75,35 @@ function AddLeadModal({
     e.preventDefault();
     if (!form.name || !form.phone) { setError("Name and Phone are required."); return; }
     setSaving(true);
-    const result = await adminCreateLead({
-      name: form.name,
-      phone: form.phone,
-      email: form.email || undefined,
-      message: form.message || undefined,
-      notes: form.notes || undefined,
-      source: form.source,
-      status: form.status,
-      assignedStaffId: form.assignedStaffId || undefined,
-      propertyId: form.propertyId || undefined,
-    });
+    
+    let result;
+    if (isEditing) {
+      result = await adminUpdateLead(lead.id, {
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        source: form.source,
+        status: form.status,
+        assignedStaffId: form.assignedStaffId || undefined,
+        propertyId: form.propertyId || undefined,
+      });
+      if (result.success && form.notes !== lead.notes) {
+        await adminUpdateLeadNotes(lead.id, form.notes);
+      }
+    } else {
+      result = await adminCreateLead({
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        message: form.message || undefined,
+        notes: form.notes || undefined,
+        source: form.source,
+        status: form.status,
+        assignedStaffId: form.assignedStaffId || undefined,
+        propertyId: form.propertyId || undefined,
+      });
+    }
+    
     setSaving(false);
     if (!result.success) { setError(result.error || "Failed"); return; }
     onClose();
@@ -92,7 +113,7 @@ function AddLeadModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-neutral-100">
-          <h2 className="text-xl font-bold text-neutral-900">Add New Lead</h2>
+          <h2 className="text-xl font-bold text-neutral-900">{isEditing ? "Edit Lead" : "Add New Lead"}</h2>
           <button onClick={onClose} className="text-neutral-400 hover:text-neutral-700 transition-colors">
             <X className="h-5 w-5" />
           </button>
@@ -159,11 +180,13 @@ function AddLeadModal({
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-neutral-500 mb-1.5 uppercase tracking-wide">Client Message (optional)</label>
-            <textarea rows={2} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-              className="w-full rounded-xl border border-neutral-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none" placeholder="What they're looking for..." />
-          </div>
+          {!isEditing && (
+            <div>
+              <label className="block text-xs font-bold text-neutral-500 mb-1.5 uppercase tracking-wide">Client Message (optional)</label>
+              <textarea rows={2} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+                className="w-full rounded-xl border border-neutral-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none" placeholder="What they're looking for..." />
+            </div>
+          )}
           <div>
             <label className="block text-xs font-bold text-neutral-500 mb-1.5 uppercase tracking-wide">Internal Notes (optional)</label>
             <textarea rows={2} value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))}
@@ -177,7 +200,7 @@ function AddLeadModal({
             </button>
             <button type="submit" disabled={saving}
               className="flex-1 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-primary-700 transition-colors disabled:opacity-60">
-              {saving ? "Saving..." : "Add Lead"}
+              {saving ? "Saving..." : (isEditing ? "Save Changes" : "Add Lead")}
             </button>
           </div>
         </form>
@@ -201,7 +224,8 @@ export function ClientTable({
   const [sourceFilter, setSourceFilter] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editingNotes, setEditingNotes] = useState<Record<string, string>>({});
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [modalLead, setModalLead] = useState<LeadList | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filtered = leads.filter(l => {
     const matchSearch = !search || l.name.toLowerCase().includes(search.toLowerCase()) || l.phone.includes(search);
@@ -231,18 +255,19 @@ export function ClientTable({
 
   return (
     <div>
-      {showAddModal && (
-        <AddLeadModal
-          onClose={() => setShowAddModal(false)}
+      {isModalOpen && (
+        <LeadModal
+          onClose={() => setIsModalOpen(false)}
           staffList={staffList}
           properties={properties}
+          lead={modalLead}
         />
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold text-neutral-900">Lead &amp; Client Management</h1>
         <button
-          onClick={() => setShowAddModal(true)}
+          onClick={() => { setModalLead(null); setIsModalOpen(true); }}
           className="flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2 text-sm font-bold text-white hover:bg-primary-700 transition-all shadow-sm"
         >
           <Plus className="h-4 w-4" /> Add Lead
@@ -363,11 +388,8 @@ export function ClientTable({
                       >
                         Notes <ChevronDown className={`h-3 w-3 transition-transform ${expandedId === lead.id ? "rotate-180" : ""}`} />
                       </button>
-                      <button
-                        disabled={loadingId === lead.id}
-                        onClick={() => handleDelete(lead.id, lead.name)}
-                        className="inline-flex items-center gap-1 text-red-500 hover:text-red-700 font-medium text-xs disabled:opacity-40"
-                      >
+                      <button onClick={() => { setModalLead(lead); setIsModalOpen(true); }} className="text-primary-600 hover:text-primary-700 font-medium text-xs">Edit</button>
+                      <button disabled={loadingId === lead.id} onClick={() => handleDelete(lead.id, lead.name)} className="text-red-600 hover:text-red-700 font-medium disabled:opacity-50 text-xs">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </td>

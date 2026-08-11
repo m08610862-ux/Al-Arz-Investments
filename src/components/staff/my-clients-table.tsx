@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MessageCircle, ChevronDown, Save, Plus, X, Trash2 } from "lucide-react";
-import { updateClientStatus, updateClientNotes, staffDeleteLead, staffCreateLead } from "@/app/actions/staff-clients";
+import { updateClientStatus, updateClientNotes, staffDeleteLead, staffCreateLead, staffUpdateLead } from "@/app/actions/staff-clients";
 import { ClientStatus, LeadSource } from "@prisma/client";
 
 type Client = {
@@ -43,22 +43,25 @@ function buildWhatsAppUrl(phone: string, name: string, propertyTitle: string | n
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
 }
 
-function AddLeadModal({
+function LeadModal({
   onClose,
   properties,
+  lead,
 }: {
   onClose: () => void;
   properties: Property[];
+  lead?: Client | null;
 }) {
+  const isEditing = !!lead;
   const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    message: "",
-    notes: "",
-    source: "PHONE" as LeadSource,
-    status: "NEW" as ClientStatus,
-    propertyId: "",
+    name: lead?.name || "",
+    phone: lead?.phone || "",
+    email: lead?.email || "",
+    message: lead?.message || "",
+    notes: lead?.notes || "",
+    source: (lead?.source || "PHONE") as LeadSource,
+    status: (lead?.status || "NEW") as ClientStatus,
+    propertyId: lead?.property?.id || "",
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -67,16 +70,33 @@ function AddLeadModal({
     e.preventDefault();
     if (!form.name || !form.phone) { setError("Name and Phone are required."); return; }
     setSaving(true);
-    const result = await staffCreateLead({
-      name: form.name,
-      phone: form.phone,
-      email: form.email || undefined,
-      message: form.message || undefined,
-      notes: form.notes || undefined,
-      source: form.source,
-      status: form.status,
-      propertyId: form.propertyId || undefined,
-    });
+    
+    let result;
+    if (isEditing) {
+      result = await staffUpdateLead(lead.id, {
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        source: form.source,
+        status: form.status,
+        propertyId: form.propertyId || undefined,
+      });
+      if (result.success && form.notes !== lead.notes) {
+        await updateClientNotes(lead.id, form.notes);
+      }
+    } else {
+      result = await staffCreateLead({
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        message: form.message || undefined,
+        notes: form.notes || undefined,
+        source: form.source,
+        status: form.status,
+        propertyId: form.propertyId || undefined,
+      });
+    }
+
     setSaving(false);
     if (!result.success) { setError(result.error || "Failed"); return; }
     onClose();
@@ -86,7 +106,7 @@ function AddLeadModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-neutral-100">
-          <h2 className="text-xl font-bold text-neutral-900">Add New Lead</h2>
+          <h2 className="text-xl font-bold text-neutral-900">{isEditing ? "Edit Lead" : "Add New Lead"}</h2>
           <button onClick={onClose} className="text-neutral-400 hover:text-neutral-700 transition-colors">
             <X className="h-5 w-5" />
           </button>
@@ -143,11 +163,13 @@ function AddLeadModal({
             </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-neutral-500 mb-1.5 uppercase tracking-wide">Client Message (optional)</label>
-            <textarea rows={2} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-              className="w-full rounded-xl border border-neutral-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none" placeholder="What they're looking for..." />
-          </div>
+          {!isEditing && (
+            <div>
+              <label className="block text-xs font-bold text-neutral-500 mb-1.5 uppercase tracking-wide">Client Message (optional)</label>
+              <textarea rows={2} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+                className="w-full rounded-xl border border-neutral-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none" placeholder="What they're looking for..." />
+            </div>
+          )}
 
           <div>
             <label className="block text-xs font-bold text-neutral-500 mb-1.5 uppercase tracking-wide">Internal Notes (optional)</label>
@@ -162,7 +184,7 @@ function AddLeadModal({
             </button>
             <button type="submit" disabled={saving}
               className="flex-1 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-primary-700 transition-colors disabled:opacity-60">
-              {saving ? "Saving..." : "Add Lead"}
+              {saving ? "Saving..." : (isEditing ? "Save Changes" : "Add Lead")}
             </button>
           </div>
         </form>
@@ -183,7 +205,8 @@ export function MyClientsTable({
   const [editingNotes, setEditingNotes] = useState<Record<string, string>>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [modalClient, setModalClient] = useState<Client | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filtered = clients.filter(c => {
     const matchesSearch = !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.phone.includes(search);
@@ -213,14 +236,14 @@ export function MyClientsTable({
 
   return (
     <div>
-      {showAddModal && (
-        <AddLeadModal onClose={() => setShowAddModal(false)} properties={properties} />
+      {isModalOpen && (
+        <LeadModal onClose={() => setIsModalOpen(false)} properties={properties} lead={modalClient} />
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold text-neutral-900">My Clients</h1>
         <button
-          onClick={() => setShowAddModal(true)}
+          onClick={() => { setModalClient(null); setIsModalOpen(true); }}
           className="flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2 text-sm font-bold text-white hover:bg-primary-700 transition-all shadow-sm"
         >
           <Plus className="h-4 w-4" /> Add Lead
@@ -336,12 +359,9 @@ export function MyClientsTable({
                 </button>
 
                 {/* Delete */}
-                <button
-                  disabled={loadingId === client.id}
-                  onClick={() => handleDelete(client.id, client.name)}
-                  className="text-red-400 hover:text-red-600 disabled:opacity-40 transition-colors p-1.5 rounded-lg hover:bg-red-50"
-                >
-                  <Trash2 className="h-4 w-4" />
+                <button onClick={() => { setModalClient(client); setIsModalOpen(true); }} className="text-primary-600 hover:text-primary-700 font-medium text-xs">Edit</button>
+                <button disabled={loadingId === client.id} onClick={() => handleDelete(client.id, client.name)} className="text-red-600 hover:text-red-700 font-medium disabled:opacity-50 text-xs">
+                  <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
             </div>

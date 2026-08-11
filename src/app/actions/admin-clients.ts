@@ -86,3 +86,33 @@ export async function adminUpdateLeadNotes(clientId: string, notes: string) {
     return { success: false, error: error.message };
   }
 }
+
+export async function adminUpdateLead(clientId: string, data: {
+  name: string;
+  phone: string;
+  email?: string;
+  source: LeadSource;
+  status: ClientStatus;
+  assignedStaffId?: string;
+  propertyId?: string;
+}) {
+  try {
+    await requireAdmin();
+    await prisma.client.update({
+      where: { id: clientId },
+      data: {
+        name: data.name,
+        phone: data.phone,
+        email: data.email || null,
+        source: data.source,
+        status: data.status,
+        assignedStaffId: data.assignedStaffId || null,
+        propertyId: data.propertyId || null,
+      },
+    });
+    revalidatePath("/admin/clients");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

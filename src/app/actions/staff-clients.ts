@@ -86,3 +86,36 @@ export async function staffCreateLead(data: {
     return { success: false, error: e.message };
   }
 }
+
+export async function staffUpdateLead(clientId: string, data: {
+  name: string;
+  phone: string;
+  email?: string;
+  source: LeadSource;
+  status: ClientStatus;
+  propertyId?: string;
+}) {
+  try {
+    const staffId = await getStaffId();
+    const existing = await prisma.client.findFirst({
+      where: { id: clientId, assignedStaffId: staffId },
+    });
+    if (!existing) return { success: false, error: "Access denied." };
+
+    await prisma.client.update({
+      where: { id: clientId },
+      data: {
+        name: data.name,
+        phone: data.phone,
+        email: data.email || null,
+        source: data.source,
+        status: data.status,
+        propertyId: data.propertyId || null,
+      },
+    });
+    revalidatePath("/staff/clients");
+    return { success: true };
+  } catch (e: any) {
+    return { success: false, error: e.message };
+  }
+}
