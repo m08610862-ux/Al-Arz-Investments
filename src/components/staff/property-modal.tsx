@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { X, Upload, Plus, Trash2, Image as ImageIcon } from "lucide-react";
 import { createProperty, updateProperty } from "@/app/actions/staff-properties";
 
@@ -38,6 +38,12 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
   const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Reset images whenever the modal opens with a different property
+  useEffect(() => {
+    setImages(property?.images ?? []);
+    setErrorMsg("");
+  }, [property?.id, isOpen]);
 
   if (!isOpen) return null;
 
