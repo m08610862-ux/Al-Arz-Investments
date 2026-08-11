@@ -195,11 +195,11 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
               <input name="bathrooms" type="number" min="0" defaultValue={property?.bathrooms ?? ""} className="input" />
             </div>
 
-            <div>
+            <div className="sm:col-span-2">
               <label className="label">Area Size</label>
               <div className="flex gap-2">
                 <input name="area" type="number" min="0" step="any" defaultValue={property?.area ?? ""} className="input flex-1 min-w-0" placeholder="Enter area number" />
-                <select name="areaUnit" defaultValue={(property as any)?.areaUnit ?? "MARLA"} className="input w-28 shrink-0">
+                <select name="areaUnit" defaultValue={(property as any)?.areaUnit ?? "MARLA"} className="input w-32 shrink-0">
                   <option value="MARLA">Marla</option>
                   <option value="KANAL">Kanal</option>
                   <option value="SQFT">Sqft</option>
