@@ -198,8 +198,8 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
             <div className="sm:col-span-2">
               <label className="label">Area Size</label>
               <div className="flex gap-2">
-                <input name="area" type="number" min="0" step="any" defaultValue={property?.area ?? ""} className="input flex-1 min-w-0" placeholder="Enter area number" />
-                <select name="areaUnit" defaultValue={(property as any)?.areaUnit ?? "MARLA"} className="input w-32 shrink-0">
+                <input name="area" type="number" min="0" step="any" defaultValue={property?.area ?? ""} className="input" style={{flex: 1, width: 'auto', minWidth: 0}} placeholder="Enter area number" />
+                <select name="areaUnit" defaultValue={(property as any)?.areaUnit ?? "MARLA"} className="input" style={{width: '7rem', flexShrink: 0}}>
                   <option value="MARLA">Marla</option>
                   <option value="KANAL">Kanal</option>
                   <option value="SQFT">Sqft</option>
