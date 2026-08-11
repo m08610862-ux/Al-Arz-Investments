@@ -70,7 +70,8 @@ export function WhatsAppLeadModal({
       const targetPhone = cleanPhoneNumber(staffPhone);
       
       // We encode the message so it's safe for a URL
-      const waMessage = `*New Inquiry*\n\n*Name:* ${data.name}\n*Property:* ${propertyTitle}\n\n*Message:* ${data.message}\n\n_Sent via Al-Arz Investments_`;
+      const propertyUrl = window.location.href;
+      const waMessage = `*New Inquiry*\n\n*Name:* ${data.name}\n*Property:* ${propertyTitle}\n*Link:* ${propertyUrl}\n\n*Message:* ${data.message}\n\n_Sent via Al-Arz Investments_`;
       const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(waMessage)}`;
 
       // 3. Open WhatsApp in new tab
