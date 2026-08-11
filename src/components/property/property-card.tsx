@@ -3,6 +3,7 @@ import Image from "next/image";
 import { BedDouble, Bath, Square, MapPin, Flame, Rocket, CheckCircle2, Circle } from "lucide-react";
 
 import { getWatermarkedUrl } from "@/lib/cloudinary";
+import { ImageCarousel } from "./image-carousel";
 
 interface PropertyCardProps {
   property: {
@@ -46,20 +47,13 @@ export function PropertyCard({ property, isSelected, onToggleSelect }: PropertyC
       href={`/properties/${property.id}`}
       className={`group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-lg transition-all duration-500 hover:-translate-y-2 border ${isSelected ? 'border-green-500 shadow-green-500/20 shadow-xl' : 'border-transparent hover:border-primary-100 shadow-primary-900/5 hover:shadow-xl hover:shadow-primary-900/15'}`}
     >
-      {/* Image Container */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
-        <Image
-          src={getWatermarkedUrl(coverImage)}
-          alt={property.title}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/60 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-        
+      {/* Image Carousel */}
+      <div className="relative">
+        <ImageCarousel images={property.images} alt={property.title} />
+
         {/* Top Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
-           <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold text-primary-900 shadow-sm uppercase tracking-widest">
+        <div className="absolute top-4 left-4 flex flex-col gap-2 z-10 pointer-events-none">
+          <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold text-primary-900 shadow-sm uppercase tracking-widest">
             For {property.type}
           </span>
           {property.status !== "AVAILABLE" && (
@@ -78,6 +72,7 @@ export function PropertyCard({ property, isSelected, onToggleSelect }: PropertyC
             </span>
           )}
         </div>
+
         {/* Selection Checkbox (if enabled) */}
         {onToggleSelect && (
           <button

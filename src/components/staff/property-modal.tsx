@@ -47,12 +47,26 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
 
   if (!isOpen) return null;
 
+  const MAX_IMAGES = 10;
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
+
+    const remaining = MAX_IMAGES - images.length;
+    if (remaining <= 0) {
+      setErrorMsg(`Maximum ${MAX_IMAGES} images allowed.`);
+      return;
+    }
+
+    const toUpload = files.slice(0, remaining);
+    if (files.length > remaining) {
+      setErrorMsg(`Only ${remaining} more image(s) can be added (max ${MAX_IMAGES}). Extra files were skipped.`);
+    }
+
     setUploading(true);
     try {
-      for (const file of files) {
+      for (const file of toUpload) {
         const fd = new FormData();
         fd.append("file", file);
         const res = await fetch("/api/upload", { method: "POST", body: fd });
@@ -62,6 +76,7 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
       }
     } finally {
       setUploading(false);
+      e.target.value = "";
     }
   };
 
@@ -222,16 +237,21 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
 
           {/* Image Upload */}
           <div>
-            <label className="label">Photos</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="label !mb-0">Photos</label>
+              <span className={`text-xs font-medium ${images.length >= MAX_IMAGES ? 'text-red-500' : 'text-neutral-400'}`}>
+                {images.length} / {MAX_IMAGES}
+              </span>
+            </div>
             <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              className="flex items-center gap-2 rounded-xl border-2 border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-600 hover:border-primary-400 hover:text-primary-600 transition-colors w-full justify-center"
+              disabled={uploading || images.length >= MAX_IMAGES}
+              className="flex items-center gap-2 rounded-xl border-2 border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-600 hover:border-primary-400 hover:text-primary-600 transition-colors w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Upload className="h-4 w-4" />
-              {uploading ? "Uploading..." : "Click to upload images"}
+              {uploading ? "Uploading..." : images.length >= MAX_IMAGES ? "Maximum images reached" : `Click to upload images (${MAX_IMAGES - images.length} remaining)`}
             </button>
             {images.length > 0 && (
               <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">

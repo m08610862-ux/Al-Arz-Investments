@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { getWatermarkedUrl } from "@/lib/cloudinary";
 import { BedDouble, Bath, Square, MapPin, Tag, Calendar, User } from "lucide-react";
 import { WhatsAppLeadModal } from "@/components/property/whatsapp-lead-modal";
+import { ImageCarousel } from "@/components/property/image-carousel";
 
 import type { Metadata } from "next";
 
@@ -64,29 +64,17 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
     maximumFractionDigits: 0,
   }).format(property.price);
 
-  // Fallback placeholder image if none uploaded
-  const coverImage =
-    property.images.length > 0
-      ? property.images[0]
-      : "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80";
-
   // Determine the primary staff member for this property (assignedTo takes precedence over createdBy)
   const staff = property.assignedTo || property.createdBy;
 
   return (
     <main className="min-h-screen pb-20">
-      {/* Hero Image Section */}
-      <section className="relative h-[40vh] min-h-[300px] w-full bg-neutral-900">
-        <Image
-          src={getWatermarkedUrl(coverImage)}
-          alt={property.title}
-          fill
-          className="object-cover opacity-80"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/80 to-transparent" />
-        
-        <div className="absolute bottom-0 left-0 w-full">
+      {/* Hero Image Carousel Section */}
+      <section className="relative w-full bg-neutral-900">
+        <ImageCarousel images={property.images} alt={property.title} hero />
+
+        {/* Text overlay pinned to bottom of carousel */}
+        <div className="absolute bottom-0 left-0 w-full z-10 pointer-events-none">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <span className="inline-flex items-center rounded-full bg-primary-600 px-3 py-1 text-xs font-bold text-white shadow-sm uppercase tracking-wider">
@@ -101,11 +89,11 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 </span>
               )}
             </div>
-            
+
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-md">
               {property.title}
             </h1>
-            
+
             <div className="mt-4 flex items-center gap-2 text-primary-100">
               <MapPin className="h-5 w-5 shrink-0" />
               <p className="text-lg">
