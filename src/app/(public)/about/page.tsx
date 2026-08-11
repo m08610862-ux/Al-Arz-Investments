@@ -124,12 +124,10 @@ export default async function AboutPage() {
             
             <div className="flex flex-col items-center justify-center text-center group">
               <div className="h-16 w-16 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm border border-primary-100">
-                <MapPin className="h-8 w-8" />
+                <ShieldCheck className="h-8 w-8" />
               </div>
-              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">
-                <AnimatedCounter end={citiesCount} />
-              </p>
-              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Trusted 100%</p>
+              <p className="text-4xl font-extrabold text-primary-900 mb-1 tracking-tight">100%</p>
+              <p className="text-sm font-bold text-primary-500 uppercase tracking-widest">Trusted</p>
             </div>
           </div>
         </div>
