@@ -103,11 +103,7 @@ html {
   color: var(--color-accent-800);
 }
 
-/* ─── Focus Ring (navy) ─────────────────────────────────────── */
-*:focus-visible {
-  outline: 2px solid var(--color-ring);
-  outline-offset: 2px;
-}
+
 
 /* ─── Form Utilities ────────────────────────────────────────── */
 .label {
