@@ -66,13 +66,37 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
 
     setUploading(true);
     try {
-      for (const file of toUpload) {
+      const uploadPromises = toUpload.map(async (file) => {
         const fd = new FormData();
         fd.append("file", file);
-        const res = await fetch("/api/upload", { method: "POST", body: fd });
-        const json = await res.json();
-        if (json.url) setImages((prev) => [...prev, json.url]);
-        else setErrorMsg(json.error || "Upload failed.");
+        try {
+          const res = await fetch("/api/upload", { method: "POST", body: fd });
+          const json = await res.json();
+          return { file, json };
+        } catch (e) {
+          return { file, json: { error: "Network error during upload." } };
+        }
+      });
+
+      const results = await Promise.all(uploadPromises);
+      
+      const newUrls: string[] = [];
+      const errors: string[] = [];
+
+      results.forEach(({ file, json }) => {
+        if (json.url) newUrls.push(json.url);
+        else errors.push(`[${file.name}] ${json.error || "Failed"}`);
+      });
+
+      if (newUrls.length > 0) {
+        setImages((prev) => [...prev, ...newUrls]);
+      }
+
+      if (errors.length > 0) {
+        setErrorMsg(errors.join("  |  "));
+      } else if (files.length <= remaining) {
+        // Clear error if everything succeeded
+        setErrorMsg("");
       }
     } finally {
       setUploading(false);
