@@ -4,6 +4,39 @@ import { useState, useRef, useEffect } from "react";
 import { X, Upload, Plus, Trash2, Image as ImageIcon } from "lucide-react";
 import { createProperty, updateProperty } from "@/app/actions/staff-properties";
 
+/** Compress an image File to JPEG at given quality, max 1800px wide. */
+async function compressImage(file: File, quality = 0.85): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX = 1800;
+      let { width, height } = img;
+      if (width > MAX || height > MAX) {
+        const ratio = Math.min(MAX / width, MAX / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => {
+          URL.revokeObjectURL(url);
+          if (!blob) return resolve(file);
+          const name = file.name.replace(/\.[^.]+$/, ".jpg");
+          resolve(new File([blob], name, { type: "image/jpeg" }));
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+
 type PropertyData = {
   id: string;
   title: string;
@@ -66,27 +99,41 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
 
     setUploading(true);
     try {
-      const uploadPromises = toUpload.map(async (file) => {
+      const newUrls: string[] = [];
+      const errors: string[] = [];
+
+      for (const rawFile of toUpload) {
+        // Compress before uploading — fixes large mobile photos & double-extension errors
+        const file = await compressImage(rawFile);
+
         const fd = new FormData();
         fd.append("file", file);
         try {
           const res = await fetch("/api/upload", { method: "POST", body: fd });
+
+          if (!res.ok) {
+            const text = await res.text();
+            let errorMessage = "Upload failed";
+            try {
+              const json = JSON.parse(text);
+              errorMessage = json.error || errorMessage;
+            } catch {
+              errorMessage = `Server Error (${res.status})`;
+            }
+            errors.push(`[${rawFile.name}] ${errorMessage}`);
+            continue;
+          }
+
           const json = await res.json();
-          return { file, json };
+          if (json.url) {
+            newUrls.push(json.url);
+          } else {
+            errors.push(`[${rawFile.name}] ${json.error || "Failed"}`);
+          }
         } catch (e) {
-          return { file, json: { error: "Network error during upload." } };
+          errors.push(`[${rawFile.name}] Network error`);
         }
-      });
-
-      const results = await Promise.all(uploadPromises);
-      
-      const newUrls: string[] = [];
-      const errors: string[] = [];
-
-      results.forEach(({ file, json }) => {
-        if (json.url) newUrls.push(json.url);
-        else errors.push(`[${file.name}] ${json.error || "Failed"}`);
-      });
+      }
 
       if (newUrls.length > 0) {
         setImages((prev) => [...prev, ...newUrls]);
