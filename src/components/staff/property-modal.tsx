@@ -99,52 +99,39 @@ export function PropertyModal({ isOpen, onClose, property }: PropertyModalProps)
 
     setUploading(true);
     try {
-      const newUrls: string[] = [];
-      const errors: string[] = [];
+      // Step 1: Compress all images in parallel (client-side, before any network request)
+      const compressed = await Promise.all(toUpload.map((f) => compressImage(f)));
 
-      for (const rawFile of toUpload) {
-        // Compress before uploading — fixes large mobile photos & double-extension errors
-        const file = await compressImage(rawFile);
-
-        const fd = new FormData();
-        fd.append("file", file);
-        try {
-          const res = await fetch("/api/upload", { method: "POST", body: fd });
-
-          if (!res.ok) {
-            const text = await res.text();
-            let errorMessage = "Upload failed";
-            try {
-              const json = JSON.parse(text);
-              errorMessage = json.error || errorMessage;
-            } catch {
-              errorMessage = `Server Error (${res.status})`;
+      // Step 2: Upload all compressed images in parallel (avoids Vercel 10s timeout)
+      const results = await Promise.all(
+        compressed.map(async (file, i) => {
+          const rawFile = toUpload[i];
+          const fd = new FormData();
+          fd.append("file", file);
+          try {
+            const res = await fetch("/api/upload", { method: "POST", body: fd });
+            if (!res.ok) {
+              const text = await res.text();
+              let msg = "Upload failed";
+              try { msg = JSON.parse(text).error || msg; } catch { msg = `Server Error (${res.status})`; }
+              return { url: null, error: `[${rawFile.name}] ${msg}` };
             }
-            errors.push(`[${rawFile.name}] ${errorMessage}`);
-            continue;
+            const json = await res.json();
+            return json.url
+              ? { url: json.url as string, error: null }
+              : { url: null, error: `[${rawFile.name}] ${json.error || "Failed"}` };
+          } catch {
+            return { url: null, error: `[${rawFile.name}] Network error` };
           }
+        })
+      );
 
-          const json = await res.json();
-          if (json.url) {
-            newUrls.push(json.url);
-          } else {
-            errors.push(`[${rawFile.name}] ${json.error || "Failed"}`);
-          }
-        } catch (e) {
-          errors.push(`[${rawFile.name}] Network error`);
-        }
-      }
+      const newUrls = results.filter((r) => r.url).map((r) => r.url as string);
+      const errors = results.filter((r) => r.error).map((r) => r.error as string);
 
-      if (newUrls.length > 0) {
-        setImages((prev) => [...prev, ...newUrls]);
-      }
-
-      if (errors.length > 0) {
-        setErrorMsg(errors.join("  |  "));
-      } else if (files.length <= remaining) {
-        // Clear error if everything succeeded
-        setErrorMsg("");
-      }
+      if (newUrls.length > 0) setImages((prev) => [...prev, ...newUrls]);
+      if (errors.length > 0) setErrorMsg(errors.join("  |  "));
+      else setErrorMsg("");
     } finally {
       setUploading(false);
       e.target.value = "";

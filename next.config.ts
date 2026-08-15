@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
   // Increase fetch timeout for external images in dev
   experimental: {
     serverActions: {
-      bodySizeLimit: "10mb",
+      bodySizeLimit: "4mb",
     },
   },
 };
