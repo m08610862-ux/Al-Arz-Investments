@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
 import { StaffTable } from "@/components/admin/staff-table";
 
-export default async function AdminStaffPage() {
+export const dynamic = "force-dynamic";
 
+export default async function AdminStaffPage() {
   const staff = await prisma.user.findMany({
     where: {
       role: "STAFF",
@@ -15,14 +16,22 @@ export default async function AdminStaffPage() {
       name: true,
       email: true,
       phone: true,
+      image: true,
       isActive: true,
       designation: true,
       createdAt: true,
+      _count: {
+        select: {
+          createdProperties: true,
+          assignedClients: true,
+          staffInventories: true,
+        },
+      },
     },
   });
 
   return (
-    <div>
+    <div className="space-y-6">
       <StaffTable staffList={staff} />
     </div>
   );

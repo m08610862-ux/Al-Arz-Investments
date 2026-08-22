@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { uploadProfileImage, removeProfileImage } from "@/app/actions/profile";
-import { Camera, Trash2, Upload, CheckCircle, AlertCircle } from "lucide-react";
+import { Camera, Trash2, Upload, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface ProfileImageUploaderProps {
@@ -46,10 +46,11 @@ export function ProfileImageUploader({ currentImage, userName }: ProfileImageUpl
 
     if (result.success) {
       setStatus({ type: "success", message: "Profile photo updated successfully!" });
+      setTimeout(() => setStatus(null), 4000);
       router.refresh();
     } else {
       setPreview(currentImage);
-      setStatus({ type: "error", message: result.error || "Upload failed." });
+      setStatus({ type: "error", message: result.error || "Upload failed. Please try again." });
     }
 
     // Reset input
@@ -57,6 +58,7 @@ export function ProfileImageUploader({ currentImage, userName }: ProfileImageUpl
   };
 
   const handleRemove = async () => {
+    if (!confirm("Are you sure you want to remove your profile photo?")) return;
     setIsRemoving(true);
     setStatus(null);
     const result = await removeProfileImage();
@@ -65,6 +67,7 @@ export function ProfileImageUploader({ currentImage, userName }: ProfileImageUpl
     if (result.success) {
       setPreview(null);
       setStatus({ type: "success", message: "Profile photo removed." });
+      setTimeout(() => setStatus(null), 4000);
       router.refresh();
     } else {
       setStatus({ type: "error", message: "Failed to remove photo." });
@@ -72,66 +75,66 @@ export function ProfileImageUploader({ currentImage, userName }: ProfileImageUpl
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      {/* Avatar */}
+    <div className="flex flex-col items-center gap-5 w-full">
+      {/* Avatar Frame */}
       <div className="relative group">
-        <div className="h-36 w-36 rounded-full overflow-hidden bg-primary-700 border-4 border-white shadow-xl flex items-center justify-center">
+        <div className="h-32 w-32 rounded-2xl overflow-hidden bg-accent-500 border-4 border-white shadow-lg flex items-center justify-center relative">
           {preview ? (
             <Image
               src={preview}
               alt={userName}
               fill
               className="object-cover"
-              sizes="144px"
+              sizes="128px"
             />
           ) : (
-            <span className="text-4xl font-black text-white select-none">{initials}</span>
+            <span className="text-3xl font-black text-white select-none">{initials}</span>
           )}
         </div>
 
-        {/* Camera overlay on hover */}
+        {/* Camera overlay trigger */}
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+          className="absolute inset-0 rounded-2xl bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-inner"
           title="Change photo"
         >
-          <Camera className="h-8 w-8 text-white" />
+          <Camera className="h-7 w-7 text-white" />
         </button>
       </div>
 
-      {/* Status message */}
+      {/* Status Feedback */}
       {status && (
         <div
-          className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl ${
+          className={`flex items-center gap-2 text-xs font-bold px-3.5 py-2 rounded-xl w-full text-center justify-center ${
             status.type === "success"
-              ? "bg-green-50 text-green-700 border border-green-200"
-              : "bg-red-50 text-red-700 border border-red-200"
+              ? "bg-accent-50 text-accent-700 border border-accent-200"
+              : "bg-rose-50 text-rose-700 border border-rose-200"
           }`}
         >
           {status.type === "success" ? (
-            <CheckCircle className="h-4 w-4 shrink-0" />
+            <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
           ) : (
-            <AlertCircle className="h-4 w-4 shrink-0" />
+            <AlertCircle className="h-3.5 w-3.5 shrink-0" />
           )}
-          {status.message}
+          <span>{status.message}</span>
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 w-full">
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm disabled:opacity-70"
+          className="flex-1 inline-flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm disabled:opacity-70 cursor-pointer"
         >
           {isUploading ? (
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            <RefreshCw className="h-3.5 w-3.5 animate-spin" />
           ) : (
-            <Upload className="h-4 w-4" />
+            <Upload className="h-3.5 w-3.5" />
           )}
-          {isUploading ? "Uploading..." : "Upload Photo"}
+          <span>{isUploading ? "Uploading..." : "Upload Photo"}</span>
         </button>
 
         {preview && (
@@ -139,20 +142,20 @@ export function ProfileImageUploader({ currentImage, userName }: ProfileImageUpl
             type="button"
             onClick={handleRemove}
             disabled={isRemoving}
-            className="flex items-center gap-2 bg-white hover:bg-red-50 text-red-600 border border-red-200 px-4 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-70"
+            className="inline-flex items-center justify-center gap-1.5 bg-neutral-100 hover:bg-rose-50 text-neutral-600 hover:text-rose-600 border border-neutral-200 px-3 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-70 cursor-pointer"
+            title="Remove photo"
           >
             {isRemoving ? (
-              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
+              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
             ) : (
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5" />
             )}
-            Remove
           </button>
         )}
       </div>
 
-      <p className="text-xs text-neutral-400 text-center">
-        JPG, PNG or WebP · Max 5MB · Square crop recommended
+      <p className="text-[10px] text-primary-400 text-center">
+        JPG, PNG or WebP · Max 5MB · Auto-cropped for advisor cards
       </p>
 
       {/* Hidden file input */}

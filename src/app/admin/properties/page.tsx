@@ -18,6 +18,7 @@ export default async function AdminPropertiesPage() {
       status: true,
       isActive: true,
       label: true,
+      images: true,
       assignedTo: { select: { id: true, name: true } },
       createdBy: { select: { id: true, name: true } },
     },

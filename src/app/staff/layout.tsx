@@ -31,7 +31,7 @@ export default async function StaffLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="h-screen w-full flex flex-col md:flex-row overflow-hidden bg-neutral-50">
       <Sidebar role="STAFF" user={{ name: session.user.name, email: session.user.email }}>
         <form
           action={async () => {
@@ -41,16 +41,16 @@ export default async function StaffLayout({
         >
           <button
             type="submit"
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-primary-200 hover:bg-red-500/10 hover:text-red-400 transition-colors group"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-primary-300 hover:bg-rose-500/15 hover:text-rose-300 border border-transparent hover:border-rose-500/20 transition-all group cursor-pointer"
           >
-            <LogOut className="h-5 w-5 text-primary-400 group-hover:text-red-400 transition-colors" />
-            Sign Out
+            <LogOut className="h-4 w-4 text-primary-400 group-hover:text-rose-300 transition-colors" />
+            <span>Sign Out</span>
           </button>
         </form>
       </Sidebar>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 md:p-8 overflow-y-auto">{children}</main>
+      {/* Main Content Area — scrolls independently */}
+      <main className="flex-1 h-full overflow-y-auto p-6 md:p-8">{children}</main>
     </div>
   );
 }

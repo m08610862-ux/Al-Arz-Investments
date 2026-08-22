@@ -137,6 +137,7 @@ model User {
   createdProperties  Property[] @relation("PropertyCreatedBy")
   assignedProperties Property[] @relation("PropertyAssignedTo")
   assignedClients    Client[]   @relation("ClientAssignedStaff")
+  staffInventories   StaffInventory[] @relation("StaffInventoryCreatedBy")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -284,4 +285,48 @@ model SiteSettings {
   linkedin             String?
 
   updatedAt DateTime @updatedAt
+}
+
+/// Staff Google Sheets-style Inventory record
+model StaffInventory {
+  id           String   @id @default(cuid())
+  title        String?
+  price        Float?
+  city         String?  @default("Rawalpindi")
+  society      String?
+  phase        String?
+  type         String?  @default("SALE") // SALE, RENT, INVESTMENT
+  purpose      String?  @default("Sale")
+  category     String?  @default("HOUSE") // HOUSE, APARTMENT, PLOT, COMMERCIAL, etc.
+  propertyType String?
+  status       String   @default("AVAILABLE") // AVAILABLE, SOLD, RENTED, RESERVED
+  label        String?  @default("NONE") // NONE, HOT, SUPER_HOT
+  address      String?
+  street       String?
+  plotNo       String?
+  number       String?
+  bedrooms     Int?
+  bathrooms    Int?
+  area         Float?
+  areaUnit     String?  @default("MARLA")
+  size         String?
+  sizeUnit     String?  @default("Marla")
+  description  String?  @db.Text
+  detail       String?  @db.Text
+  images       String[] @default([])
+  contact      String?
+  comment      String?  @db.Text
+
+  createdById  String
+  createdBy    User     @relation("StaffInventoryCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([createdById])
+  @@index([society])
+  @@index([phase])
+  @@index([type])
+  @@index([category])
+  @@index([status])
 }

@@ -5,6 +5,7 @@ import { Edit2, Trash2, Plus, Eye, EyeOff, Flame, Rocket, Search, X } from "luci
 import { PropertyModal } from "./property-modal";
 import { deleteProperty, togglePropertyActiveStatus } from "@/app/actions/staff-properties";
 import Link from "next/link";
+import Image from "next/image";
 
 type Property = {
   id: string;
@@ -223,13 +224,34 @@ export function MyPropertiesTable({ properties }: { properties: Property[] }) {
                       {property.isActive ? <><Eye className="h-3.5 w-3.5" /> Live</> : <><EyeOff className="h-3.5 w-3.5" /> Hidden</>}
                     </button>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-neutral-900 text-base truncate">{property.title}</h3>
-                      {property.label === "SUPER_HOT" && <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-600 rounded whitespace-nowrap shrink-0"><Rocket className="h-3 w-3" /> Super Hot</span>}
-                      {property.label === "HOT" && <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-orange-100 text-orange-600 rounded whitespace-nowrap shrink-0"><Flame className="h-3 w-3" /> Hot</span>}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      {/* Cover image thumbnail */}
+                      <div className="relative h-14 w-20 shrink-0 rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
+                        {property.images?.[0] ? (
+                          <Image
+                            src={property.images[0]}
+                            alt={property.title}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                          />
+                        ) : (
+                          <div className="h-full w-full flex items-center justify-center text-neutral-300 text-[10px] font-medium select-none">
+                            No Photo
+                          </div>
+                        )}
+                      </div>
+                      {/* Title + meta */}
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <h3 className="font-bold text-neutral-900 text-sm truncate">{property.title}</h3>
+                          {property.label === "SUPER_HOT" && <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-600 rounded whitespace-nowrap shrink-0"><Rocket className="h-3 w-3" /> Super Hot</span>}
+                          {property.label === "HOT" && <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-orange-100 text-orange-600 rounded whitespace-nowrap shrink-0"><Flame className="h-3 w-3" /> Hot</span>}
+                        </div>
+                        <p className="text-xs text-neutral-500 truncate">{[property.city, property.society, property.phase, property.category].filter(Boolean).join(" · ")}</p>
+                      </div>
                     </div>
-                    <p className="text-xs text-neutral-500">{[property.city, property.society, property.phase, property.category].filter(Boolean).join(" · ")}</p>
                   </td>
                   <td className="px-6 py-4 font-medium text-neutral-900">Rs {property.price.toLocaleString("en-PK")}</td>
                   <td className="px-6 py-4">
